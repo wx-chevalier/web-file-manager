@@ -1,4 +1,4 @@
-# ufd-file-manager
+# uf-file-manager
 
 # About
 
