@@ -10,7 +10,7 @@ interface IProps extends ModalProps {
   entry: FileType;
 }
 
-class FileInfoComp extends Component<IProps> {
+class FileInfoComp extends Component<IProps, {}> {
   render() {
     const { entry } = this.props;
     const ext = getFileExt(entry);

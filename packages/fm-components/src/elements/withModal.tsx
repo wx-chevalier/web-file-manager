@@ -13,7 +13,7 @@ export interface ModalProps {
   closeFn?: Function;
 }
 
-interface IState {
+export interface IModalState {
   originalX: number;
   originalY: number;
   lastTranslateX: number;
@@ -26,7 +26,7 @@ interface IState {
 export const withModal = <CompProps extends ModalProps>(WrappedComponent: React.ComponentType) => (
   params: ModalProps
 ) =>
-  class Modal extends Component<CompProps, IState> {
+  class Modal extends Component<CompProps, IModalState> {
     _ref = createRef<HTMLDivElement>();
     state = {
       isDragging: false,
