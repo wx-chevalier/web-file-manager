@@ -1,22 +1,28 @@
-import React, { Component, createRef, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { Component, createRef } from 'react';
 
-import { LOCAL } from '@Utils/constants';
-import { showPathEntries } from '@Utils/fileSystem';
+import { NavContextProps, withContext } from '../../context/NavContext';
+import { FileType, SearchType, getPathFiles } from '../../types';
 
+import { Container, Input, Line } from './styles';
+import Filter from './Filter';
 import MagnifyIcon from './MagnifyIcon';
 import { SearchResults } from './SearchResults';
-import Filter from './filter';
 
-import { Container, Line, Input } from './styles';
+interface IProps extends NavContextProps {}
 
-class SearchBar extends Component {
+interface IState {
+  term: string;
+  width: string;
+  mode: SearchType;
+  data?: FileType[];
+}
+
+class SearchBarComp extends Component<IProps, IState> {
   _ref = createRef<HTMLDivElement>();
-  state = {
+  state: IState = {
     term: '',
-    width: 0,
-    mode: LOCAL,
+    width: '0',
+    mode: 'LOCAL',
     data: null
   };
 
@@ -29,13 +35,15 @@ class SearchBar extends Component {
     });
   }
 
-  handleMode = mode => {
+  onModeChange = (mode: SearchType) => {
     this.setState({
       mode
     });
   };
 
   render() {
+    const { fileMap, currentPath } = this.props;
+
     return (
       <Input placeholder="Search for anything" ref={this._ref}>
         <MagnifyIcon
@@ -44,7 +52,7 @@ class SearchBar extends Component {
             position: 'absolute',
             pointerEvents: 'none',
             left: 9,
-            marginTop: 5
+            marginTop: 9
           }}
           size={15}
         />
@@ -55,18 +63,17 @@ class SearchBar extends Component {
         />
         {this.state.term.length > 0 ? (
           <Container style={{ width: this.state.width }}>
-            <Filter mode={this.state.mode} handleMode={this.handleMode} />
+            <Filter mode={this.state.mode} onModeChange={this.onModeChange} />
             <Line />
             <SearchResults
               style={{ width: this.state.width }}
               term={this.state.term}
-              isDraggable={false}
               data={
-                this.state.mode === LOCAL
-                  ? this.props.entry
-                  : Object.keys(this.props.fileSystem).map(id => this.props.fileSystem[id])
+                this.state.mode === 'LOCAL'
+                  ? getPathFiles(currentPath, fileMap)
+                  : Object.keys(fileMap).map(id => fileMap[id])
               }
-              closeResult={() => this.setState({ term: '' })}
+              onResultClose={() => this.setState({ term: '' })}
             />
           </Container>
         ) : (
@@ -77,12 +84,4 @@ class SearchBar extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const path = ownProps.location.pathname;
-  return {
-    entry: showPathEntries(path, state.fileSystem),
-    fileSystem: state.fileSystem
-  };
-};
-
-export default withRouter(connect(mapStateToProps)(SearchBar));
+export const SearchBar = withContext(SearchBarComp);

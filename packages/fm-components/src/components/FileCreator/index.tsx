@@ -11,7 +11,7 @@ interface IProps extends ModalProps {
   isSubmitting?: boolean;
 
   closeFn?: Function;
-  addEntry?: (file: FileType) => void;
+  onAdd?: (file: FileType) => void;
 }
 
 function FileCreatorComp(_props: IProps) {
@@ -48,7 +48,7 @@ function FileCreatorComp(_props: IProps) {
           return errors;
         }}
         onSubmit={values => {
-          _props.addEntry({
+          _props.onAdd({
             ...values,
             isDir
           });

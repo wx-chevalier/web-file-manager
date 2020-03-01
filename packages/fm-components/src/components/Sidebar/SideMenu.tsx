@@ -1,19 +1,27 @@
 import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
 
-import { FILE } from '@Utils/constants';
-import { entriesAreSame } from '@Utils/fileSystem';
-import Collapse from './Collapse';
+import { NavContextProps, withContext } from '../../context/NavContext';
+import { FileType } from '../../types';
 
-import { LinkContainer, DropDownIcon, Line } from './styles';
+import { DropDownIcon, LinkContainer } from './styles';
+import { Collapse } from './Collapse';
 
-class SideMenu extends Component {
-  state = {
-    fileStructure: null
+interface IProps extends NavContextProps {
+  fileTree: FileType[];
+}
+
+interface IState {
+  fileTree: FileType[] | null;
+}
+
+class SideMenuComp extends Component<IProps, IState> {
+  state: IState = {
+    fileTree: null
   };
-  static getDerivedStateFromProps(nextProps) {
+
+  static getDerivedStateFromProps(nextProps: IProps) {
     return {
-      fileStructure: nextProps.fileStructure
+      fileTree: nextProps.fileTree
     };
   }
 
@@ -27,24 +35,19 @@ class SideMenu extends Component {
   //   return true;
   // }
 
-  handler = (children, value) => {
-    let i = value + 1;
+  renderTree = (children: FileType[], value: number) => {
+    const i = value + 1;
+
     return children && children.length > 0
       ? children.map((entry, _) => {
-          if (entry.type == FILE) return;
-          const flag = entry.children
-            ? entry.children.length
-              ? true
-              : false
-            : false;
+          if (!entry.isDir) return;
+          const flag = entry.children ? (entry.children.length ? true : false) : false;
           if (!flag) {
             return (
               <LinkContainer
                 key={entry.path}
-                onClick={() => this.props.history.push(entry.path)}
-                className={
-                  this.props.location.pathname === entry.path ? 'selected' : ''
-                }
+                onClick={() => this.props.onUpdatePath(entry.path)}
+                className={this.props.currentPath === entry.path ? 'selected' : ''}
               >
                 <div className="link" style={{ marginLeft: `${10 * i}px` }}>
                   {entry.name}
@@ -54,16 +57,12 @@ class SideMenu extends Component {
           }
           return (
             <Collapse index={i} key={entry.path}>
-              {(visible, handleVisible) => {
+              {(visible: boolean, setVisible: Function) => {
                 return (
                   <Fragment>
                     <LinkContainer
                       key={entry.path}
-                      className={
-                        this.props.location.pathname === entry.path
-                          ? 'selected'
-                          : ''
-                      }
+                      className={this.props.currentPath === entry.path ? 'selected' : ''}
                     >
                       <div
                         className="link"
@@ -71,16 +70,16 @@ class SideMenu extends Component {
                           marginLeft: `${10 * i}px`,
                           width: '100%'
                         }}
-                        onClick={() => this.props.history.push(entry.path)}
+                        onClick={() => this.props.onUpdatePath(entry.path)}
                       >
                         {entry.name}
                       </div>
-                      <div className="dropdown" onClick={() => handleVisible()}>
+                      <div className="dropdown" onClick={() => setVisible()}>
                         <DropDownIcon className={visible ? '' : 'clicked'} />
                       </div>
                     </LinkContainer>
                     <div style={{ position: 'relative' }}>
-                      {visible ? this.handler(entry.children, i) : ''}
+                      {visible ? this.renderTree(entry.children, i) : ''}
                     </div>
                   </Fragment>
                 );
@@ -92,8 +91,8 @@ class SideMenu extends Component {
   };
 
   render() {
-    return <Fragment>{this.handler(this.state.fileStructure, 0)}</Fragment>;
+    return <Fragment>{this.renderTree(this.state.fileTree, 0)}</Fragment>;
   }
 }
 
-export default withRouter(SideMenu);
+export const SideMenu = withContext(SideMenuComp);

@@ -72,6 +72,7 @@ export const Result = styled.div`
   white-space: nowrap;
   max-height: 100px;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 2px solid rgba(238, 239, 241, 0.5);
   &:hover {
     background: #eeeff1;
@@ -83,6 +84,7 @@ export const Path = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   color: #b1b1b1;
+  margin-right: 32px;
 `;
 
 export const Img = styled.img`

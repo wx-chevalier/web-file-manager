@@ -11,7 +11,7 @@ export interface FileType {
   name: string;
   // 创建者
   creatorName: string;
-  // 路径
+  // 路径，完整的文件路径
   path?: string;
   // 大小 in Bytes
   size: number;
@@ -21,7 +21,7 @@ export interface FileType {
   updatedAt?: string;
   deletedAt?: string;
 
-  // 父路径
+  // 父路径，对于文件，就是所在文件夹的路径；对于文件夹，就是父文件夹路径
   parentPath?: string | null;
   // 父文件夹 id
   parentId?: string | null;

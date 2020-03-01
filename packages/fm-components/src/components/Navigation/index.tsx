@@ -26,11 +26,11 @@ export const renderPath = (path: string) => {
 
 interface IProps extends NavContextProps {}
 
-const Navigation = (props: IProps) => {
+const NavigationComp = (props: IProps) => {
   return (
     <Container>
       <div
-        style={{ marginTop: -2, cursor: 'pointer' }}
+        style={{ marginTop: 3, cursor: 'pointer' }}
         onClick={() => {
           props.currentPath === '/' ? null : props.onUpdatePath(getGoBackPath(props.currentPath));
         }}
@@ -42,4 +42,4 @@ const Navigation = (props: IProps) => {
   );
 };
 
-export default withContext<IProps>(Navigation);
+export const Navigation = withContext<IProps>(NavigationComp);

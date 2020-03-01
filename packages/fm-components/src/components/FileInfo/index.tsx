@@ -4,7 +4,7 @@ import { ModalProps, withModal } from '../../elements/withModal';
 import { SvgIcon } from '../../elements/SvgIcon';
 import { FileType, formatDate, getFileExt } from '../../types';
 
-import { Details, Icon, Img, Logo } from './styles';
+import { Details, Icon, Logo } from './styles';
 
 interface IProps extends ModalProps {
   entry: FileType;
@@ -19,9 +19,7 @@ class FileInfoComp extends Component<IProps> {
       <Fragment>
         <Icon>
           <Logo>
-            <Img
-              src={((<SvgIcon name={entry.isDir ? 'folder' : 'file'} />) as unknown) as string}
-            />
+            {entry.isDir ? <SvgIcon name="folder" size={50} /> : <SvgIcon name="file" size={50} />}
             {!entry.isDir ? <span>{`.${ext}`}</span> : ''}
           </Logo>
         </Icon>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const SideBarContainer = styled.section`
+export const SideBarContainer = styled.section<{ toggle: boolean }>`
   background: #f9fafc;
   width: 320px;
   height: 100%;
@@ -23,7 +23,7 @@ export const ShowMenu = styled.div`
   right: -28px;
   background: linear-gradient(to right, #f9fafc, #acb9c3);
   border-radius: 3px;
-  box-shadow: 5px 0 0 #888888;
+  box-shadow: 5px 0 0 #888;
   display: none;
   z-index: 2000;
   cursor: pointer;
@@ -38,7 +38,7 @@ export const Root = styled.div`
   padding: 32px;
   text-decoration: none;
   color: #afb2b6;
-  &::after {
+  &:after {
     content: 'Root';
     text-transform: uppercase;
   }
@@ -50,7 +50,6 @@ export const LinkContainer = styled.div`
   padding: 7px 32px;
   font-family: Lato, sans-serif;
   font-size: 16px;
-  position: relative;
   cursor: pointer;
   align-content: space-around;
   color: #2f363f;
@@ -96,14 +95,14 @@ export const Bar = styled.div`
 
 export const CollapseContainer = styled.div`
   position: relative;
-  &::after {
+  &:after {
     content: '';
     position: absolute;
   }
 `;
 
 export const Line = styled.div`
-  &::after {
+  &:after {
     content: '';
     position: absolute;
     width: 2px;

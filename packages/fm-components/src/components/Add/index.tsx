@@ -5,7 +5,7 @@ import { FileType } from '../../types';
 import { FileCreator } from '../FileCreator';
 
 interface IProps {
-  saveEntry: (file: FileType) => void;
+  onAdd: (file: FileType) => void;
 }
 
 export function AddComp(props: IProps) {
@@ -17,7 +17,7 @@ export function AddComp(props: IProps) {
         <FileCreator
           title="Create New"
           closeFn={() => handleOpen(false)}
-          addEntry={(value: FileType) => props.saveEntry(value)}
+          onAdd={(value: FileType) => props.onAdd(value)}
         />
       ) : (
         ''

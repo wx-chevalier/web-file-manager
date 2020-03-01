@@ -2,10 +2,18 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { NavContext } from '../../context/NavContext';
-import Navigation from '../Navigation';
+import { FileType } from '../../types';
+import { FileGrid } from '../FileGrid';
+import { Navigation } from '../Navigation';
+import { SearchBar } from '../SearchBar';
 
 interface IProps {
-  currentPath: string;
+  fileMap: Record<string, FileType>;
+
+  currentPath?: string;
+
+  onAdd?: (file: FileType) => void;
+  onDelete?: (id: string) => void;
 }
 
 interface IState {
@@ -13,23 +21,31 @@ interface IState {
 }
 
 export class UfFileManager extends Component<IProps, IState> {
-  state = { currentPath: '/' };
+  state = { currentPath: this.props.currentPath || '/' };
+
+  componentWillReceiveProps(nextProps: IProps) {
+    // 当外部传入的 Path 发生变化时候
+    if (nextProps.currentPath !== this.props.currentPath) {
+      this.onUpdatePath(nextProps.currentPath);
+    }
+  }
 
   onUpdatePath = (currentPath: string) => {
     this.setState({ currentPath });
   };
 
   render() {
+    const { fileMap, onAdd, onDelete } = this.props;
     const { currentPath } = this.state;
 
     return (
-      <NavContext.Provider value={{ currentPath, onUpdatePath: this.onUpdatePath }}>
+      <NavContext.Provider value={{ fileMap, currentPath, onUpdatePath: this.onUpdatePath }}>
         <Container>
           <TopBar>
             <Navigation />
             <SearchBar />
           </TopBar>
-          <Grid />
+          <FileGrid onAdd={onAdd} onDelete={onDelete} />
         </Container>
       </NavContext.Provider>
     );
@@ -38,7 +54,6 @@ export class UfFileManager extends Component<IProps, IState> {
 
 const Container = styled.div`
   padding: 41px;
-  margin-left: 320px;
   transition: margin-left 250ms ease-in;
   @media screen and (max-width: 768px) {
     margin-left: 0;

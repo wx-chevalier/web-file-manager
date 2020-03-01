@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
-import SideMenu from './SideMenu';
-import { connect } from 'react-redux';
 
-import { generateTreeFromList } from '@Utils/filesystem';
+import { NavContextProps, withContext } from '../../context/NavContext';
+import { FileType } from '../../types';
 
-import { SideBarContainer, Root, ShowMenu } from './styles';
+import { Root, ShowMenu, SideBarContainer } from './styles';
+import { SideMenu } from './SideMenu';
 
-const Sidebar = ({ fileStructure }) => {
-  let children = fileStructure[0].children;
+interface IProps extends NavContextProps {
+  fileTree: FileType[];
+}
+
+const SidebarComp = ({ fileTree, onUpdatePath }: IProps) => {
+  const children = fileTree[0].children;
+
   const [toggle, handleToggle] = useState(true);
+
   return (
     <SideBarContainer toggle={toggle}>
       <ShowMenu onClick={() => handleToggle(!toggle)} />
-      <Link to="/" className="rootLink">
+      <a
+        className="rootLink"
+        onClick={() => {
+          onUpdatePath('/');
+        }}
+      >
         <Root />
-      </Link>
-      <SideMenu fileStructure={children} />
+      </a>
+      <SideMenu fileTree={children} />
     </SideBarContainer>
   );
 };
 
-const mapStateToProps = state => {
-  const fileStructure = generateTreeFromList(state.fileSystem);
-  return {
-    fileStructure
-  };
-};
-
-export default connect(mapStateToProps)(Sidebar);
+export const Sidebar = withContext(SidebarComp);

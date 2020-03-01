@@ -1,5 +1,9 @@
 import * as React from 'react';
 
+import { UfFileManager } from '../../src';
+
+import { dummyFileSystem } from './dummyFileSystem';
+
 export default function Simple() {
-  return <div />;
+  return <UfFileManager fileMap={dummyFileSystem} />;
 }

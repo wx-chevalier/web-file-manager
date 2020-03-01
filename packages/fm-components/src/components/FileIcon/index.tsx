@@ -1,17 +1,18 @@
 import React, { Component, createRef } from 'react';
 
-import { withContext } from '../../context/NavContext';
+import { NavContextProps, withContext } from '../../context/NavContext';
 import { SvgIcon } from '../../elements/SvgIcon';
 import { FileType, StyleObject, getFileExt } from '../../types';
 import { FileInfo } from '../FileInfo';
 import { Menu } from '../Menu';
 
-import { Container, Img, Logo, Name } from './styles';
+import { Container, Logo, Name } from './styles';
 
-interface IProps {
+interface IProps extends NavContextProps {
+  index: number | string;
   entry: FileType;
 
-  deleteFn: Function;
+  onDelete: Function;
 }
 
 interface IState {
@@ -36,13 +37,11 @@ class FileIconComp extends Component<IProps, IState> {
 
   componentDidMount() {
     document.addEventListener('contextmenu', this._handleContextMenu);
-
     document.addEventListener('click', this._handleMouseLeave);
   }
 
   componentWillUnmount() {
     document.removeEventListener('contextmenu', this._handleContextMenu);
-
     document.removeEventListener('click', this._handleMouseLeave);
   }
 
@@ -115,7 +114,7 @@ class FileIconComp extends Component<IProps, IState> {
 
   _handleMouseLeave = (event: any) => {
     const { visible } = this.state;
-    const wasOutside = !(event.target.contains === this.nodeRef.current);
+    const wasOutside = !(event.target && this.nodeRef.current.contains(event.target));
 
     if (wasOutside && visible)
       this.setState({
@@ -155,11 +154,26 @@ class FileIconComp extends Component<IProps, IState> {
   };
 
   handleDelete = () => {
-    this.props.deleteFn();
+    this.props.onDelete();
   };
 
   enterFolder = () => {
-    if (this.props.entry.type === FOLDER) this.props.history.push(this.props.entry.path);
+    if (this.props.entry.isDir) {
+      this.props.onUpdatePath(this.props.entry.path);
+    } else {
+      // 对于文件夹，直接打开
+      this.setState({
+        style: {
+          top:
+            this.nodeRef.current.offsetTop +
+            this.nodeRef.current.getBoundingClientRect().height / 2,
+          left:
+            this.nodeRef.current.offsetLeft + this.nodeRef.current.getBoundingClientRect().width / 2
+        },
+        prevStyle: this.state.style,
+        visible: true
+      });
+    }
   };
 
   render() {
@@ -170,15 +184,7 @@ class FileIconComp extends Component<IProps, IState> {
     return (
       <Container ref={this.nodeRef}>
         <Logo onClick={() => this.enterFolder()}>
-          <Img
-            src={
-              ((entry.isDir ? (
-                <SvgIcon name="folder" />
-              ) : (
-                <SvgIcon name="file" />
-              )) as unknown) as string
-            }
-          />
+          {entry.isDir ? <SvgIcon name="folder" size={50} /> : <SvgIcon name="file" size={50} />}
           {!entry.isDir ? <span>{`.${ext}`}</span> : ''}
         </Logo>
         <Name>{entry.name}</Name>
@@ -189,8 +195,8 @@ class FileIconComp extends Component<IProps, IState> {
               {
                 info: 'Open',
                 onClick: () => {
-                  entry.type === FOLDER
-                    ? this.props.history.push(this.props.entry.path)
+                  entry.isDir
+                    ? this.props.onUpdatePath(this.props.entry.path)
                     : this.setState({
                         showInfo: true
                       });
@@ -223,12 +229,12 @@ class FileIconComp extends Component<IProps, IState> {
               })
             }
             entry={{
-              type: entry.type,
+              isDir: entry.isDir,
               name: entry.name,
               path: '/',
               ext: ext,
               size: entry.size,
-              date: entry.createdAt,
+              createdAt: entry.createdAt,
               creatorName: entry.creatorName
             }}
           />

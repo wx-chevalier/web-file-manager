@@ -1,28 +1,34 @@
 import React, { Component } from 'react';
 
-import { FilterContainer } from './styles';
+import { SearchType } from '../../types';
 
-import { LOCAL, GLOBAL } from '@Utils/constants';
+import { FilterContainer, FilterContainerOptions } from './styles';
 
-export default class Filter extends Component {
+interface IProps {
+  mode: SearchType;
+
+  onModeChange: (mode: SearchType) => void;
+}
+
+export default class Filter extends Component<IProps> {
   render() {
     return (
       <FilterContainer>
         Search:
-        <FilterContainer.Options>
+        <FilterContainerOptions>
           <span
-            className={this.props.mode === LOCAL ? 'selected' : ''}
-            onClick={() => this.props.handleMode(LOCAL)}
+            className={this.props.mode === 'LOCAL' ? 'selected' : ''}
+            onClick={() => this.props.onModeChange('LOCAL')}
           >
             Local
           </span>
           <span
-            className={this.props.mode === GLOBAL ? 'selected' : ''}
-            onClick={() => this.props.handleMode(GLOBAL)}
+            className={this.props.mode === 'GLOBAL' ? 'selected' : ''}
+            onClick={() => this.props.onModeChange('GLOBAL')}
           >
             Global
           </span>
-        </FilterContainer.Options>
+        </FilterContainerOptions>
       </FilterContainer>
     );
   }

@@ -13,7 +13,7 @@ export class Menu extends Component<IProps> {
     const { style, content } = this.props;
 
     return (
-      <Container style={style}>
+      <Container className="FileIcon-Menu" style={style}>
         {content.map(c => (
           <div key={c.info} className="content" style={c.style} onClick={c.onClick}>
             {c.info}

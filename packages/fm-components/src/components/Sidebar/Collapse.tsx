@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { CollapseContainer, Line } from './styles';
 
-function Collapse(props) {
-  const [visible, handleVisible] = useState(false);
+import { CollapseContainer } from './styles';
+
+export function Collapse(props: { children: Function; index: number }) {
+  const [visible, setVisible] = useState(false);
+
   return (
-    <CollapseContainer>
-      {props.children(visible, () => handleVisible(!visible))}
-    </CollapseContainer>
+    <CollapseContainer>{props.children(visible, () => setVisible(!visible))}</CollapseContainer>
   );
 }
-
-export default Collapse;

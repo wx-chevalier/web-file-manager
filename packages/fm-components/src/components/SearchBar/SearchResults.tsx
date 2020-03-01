@@ -1,12 +1,17 @@
 import React, { Component, Fragment } from 'react';
-import { withRouter } from 'react-router-dom';
 
-import { Result, NoResult, Img, Path } from './styles';
-import { withContext, NavContextProps } from '../../context/NavContext';
-import { FileType } from '../../types';
+import { NavContextProps, withContext } from '../../context/NavContext';
+import { SvgIcon } from '../../elements/SvgIcon';
+import { FileType, StyleObject, classPrefix } from '../../types';
+
+import { NoResult, Path, Result } from './styles';
 
 interface IProps extends NavContextProps {
-  closeResult: Function;
+  data: FileType[];
+  term: string;
+  style: StyleObject;
+
+  onResultClose: Function;
 }
 
 class SearchResultsComp extends Component<IProps> {
@@ -14,26 +19,28 @@ class SearchResultsComp extends Component<IProps> {
     const path = !file.isDir ? file.parentPath : file.path;
 
     this.props.onUpdatePath(path);
-    this.props.closeResult();
+    this.props.onResultClose();
   };
 
   render() {
+    const { style } = this.props;
+
     const data = this.props.data.filter(arr => arr.name.match(this.props.term) !== null);
+
     return (
       <Fragment>
         {data.length > 0 ? (
-          data.map(arr => (
-            <Result key={arr.path} onClick={() => this.onClick(arr)}>
-              <div>
-                <Img src={arr.type == FILE ? FileIcon : FolderIcon} />
-                {arr.name}
+          data.map(file => (
+            <Result key={file.path} style={style} onClick={() => this.onClick(file)}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <SvgIcon name={file.isDir ? 'folder' : 'file'} size={50} />
+                <span style={{ marginLeft: 8 }}>{file.name}</span>
               </div>
-
-              <Path>{arr.path}</Path>
+              <Path className={`${classPrefix}-SearchResults-result-path`}>{file.path}</Path>
             </Result>
           ))
         ) : (
-          <NoResult>No Result</NoResult>
+          <NoResult style={style}>No Result</NoResult>
         )}
       </Fragment>
     );
