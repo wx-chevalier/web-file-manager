@@ -1,0 +1,70 @@
+{
+  "name": "@unionfab/fm-components",
+  "version": "0.0.1",
+  "description": "Unionfab File Manager",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Unionfab/uf-file-manager"
+  },
+  "author": "wx-chevalier@github",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "keywords": [
+    "webpack",
+    "react"
+  ],
+  "scripts": {
+    "build": "npm run build:es && npm run build:cjs && npm run build:umd",
+    "build-storybook": "build-storybook",
+    "build:cjs": "tsc --project ./tsconfig.cjs.json",
+    "build:es": "tsc --project ./tsconfig.es.json",
+    "build:umd": "NODE_ENV=production webpack --config ./scripts/webpack/webpack.config.umd.js -p",
+    "clean": "rimraf dist",
+    "dev": "webpack-dev-server --config ./scripts/webpack/webpack.config.dev.js --hot",
+    "lint": "run-p lint:*",
+    "lint:es": "cross-env PARSER_NO_WATCH=true eslint . --cache --ext js,md,ts,tsx -f friendly --max-warnings 10",
+    "lint:style": "stylelint **/*.less --cache",
+    "lint:ts": "tslint -p . -t stylish",
+    "lint:tsc": "tsc -p tsconfig.json --incremental false --noEmit",
+    "start": "npm run dev",
+    "storybook": "start-storybook -p 6006"
+  },
+  "dependencies": {
+    "formik": "^2.1.4",
+    "md5": "^2.2.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1",
+    "styled-components": "^5.0.1",
+    "with-context": "^0.0.3"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^5.1.11",
+    "@storybook/addon-info": "^5.1.11",
+    "@storybook/addon-links": "^5.1.11",
+    "@storybook/addons": "^5.1.11",
+    "@storybook/react": "^5.1.11",
+    "@types/md5": "^2.1.33",
+    "@types/react-helmet": "^5.0.15",
+    "@types/styled-components": "^5.0.1",
+    "@wx-fc/app-config": "^0.3.3",
+    "cross-env": "^6.0.3",
+    "webpack": "^4.41.6",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,scss,less,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true
+  }
+}
