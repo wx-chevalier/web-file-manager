@@ -1,5 +1,7 @@
 # fc-file-manager
 
+![文件截图](https://s2.ax1x.com/2020/03/02/32cUbR.md.png)
+
 ## Feature
 
 - 能提供列表、网格等多种视图。
