@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
-import { SvgIcon } from '../../elements/SvgIcon';
 import { FileType, getParentIdByPath, getPathFiles, getPathSet } from '../../types';
 import { Add } from '../Add';
 import { FileIcon } from '../FileIcon';
-import { SEO } from '../SEO';
 
 interface IProps extends NavContextProps {
   onAdd: (file: FileType) => void;
@@ -38,12 +36,6 @@ class FileGridComp extends Component<IProps> {
 
     return (
       <Container>
-        <SEO
-          url={currentPath}
-          title={currentPath}
-          image={((<SvgIcon name="folder" size={50} />) as unknown) as string}
-          description={currentPath}
-        />
         {files.map((entry, i) => (
           <FileIcon
             entry={entry}

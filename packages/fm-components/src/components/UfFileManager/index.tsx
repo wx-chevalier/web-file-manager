@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import { NavContext } from '../../context/NavContext';
-import { FileType } from '../../types';
+import { SvgIcon } from '../../elements/SvgIcon';
+import { FileType, classPrefix } from '../../types';
 import { FileGrid } from '../FileGrid';
 import { Navigation } from '../Navigation';
 import { SearchBar } from '../SearchBar';
+import { SEO } from '../SEO';
 
 interface IProps {
   fileMap: Record<string, FileType>;
-
   currentPath?: string;
+  withSEO?: boolean;
 
   onAdd?: (file: FileType) => void;
   onDelete?: (id: string) => void;
@@ -21,6 +23,10 @@ interface IState {
 }
 
 export class UfFileManager extends Component<IProps, IState> {
+  static defaultProps = {
+    withSEO: false
+  };
+
   state = { currentPath: this.props.currentPath || '/' };
 
   componentWillReceiveProps(nextProps: IProps) {
@@ -35,12 +41,20 @@ export class UfFileManager extends Component<IProps, IState> {
   };
 
   render() {
-    const { fileMap, onAdd, onDelete } = this.props;
+    const { fileMap, withSEO, onAdd, onDelete } = this.props;
     const { currentPath } = this.state;
 
     return (
       <NavContext.Provider value={{ fileMap, currentPath, onUpdatePath: this.onUpdatePath }}>
-        <Container>
+        {withSEO && (
+          <SEO
+            url={currentPath}
+            title={currentPath}
+            image={((<SvgIcon name="folder" size={50} />) as unknown) as string}
+            description={currentPath}
+          />
+        )}
+        <Container className={`${classPrefix}-file-manager-container`}>
           <TopBar>
             <Navigation />
             <SearchBar />
