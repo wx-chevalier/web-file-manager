@@ -6,6 +6,16 @@
 - 提供拖拽放入、排序等功能。
 - 提供扩展接口：视图渲染回调、右击工具菜单渲染回调。
 
+## Usage
+
+```tsx
+import { dummyFileSystem } from './dummyFileSystem';
+
+export default function Simple() {
+  return <UfFileManager fileMap={dummyFileSystem} />;
+}
+```
+
 # About
 
 ## Motivation & Credits
