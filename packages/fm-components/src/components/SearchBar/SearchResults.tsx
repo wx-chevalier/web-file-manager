@@ -31,7 +31,12 @@ class SearchResultsComp extends Component<IProps> {
       <Fragment>
         {data.length > 0 ? (
           data.map(file => (
-            <Result key={file.path} style={style} onClick={() => this.onClick(file)}>
+            <Result
+              className={`${classPrefix}-searchBar-searchResults`}
+              key={file.path}
+              style={style}
+              onClick={() => this.onClick(file)}
+            >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <SvgIcon name={file.isDir ? 'folder' : 'file'} size={50} />
                 <span style={{ marginLeft: 8 }}>{file.name}</span>

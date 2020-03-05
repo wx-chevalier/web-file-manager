@@ -5,5 +5,5 @@ import { UfFileManager } from '../../src';
 import { dummyFileSystem } from './dummyFileSystem';
 
 export default function Simple() {
-  return <UfFileManager fileMap={dummyFileSystem} />;
+  return <UfFileManager fileMap={dummyFileSystem} currentPath="/apps" />;
 }
