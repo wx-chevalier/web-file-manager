@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
@@ -6,10 +7,12 @@ import { getGoBackPath } from '../../types';
 import { Container, Path } from './styles';
 import GoBack from './GoBack';
 
-export const renderPath = (path: string) => {
+export const renderPath = (path: string, onClickPath?: Function) => {
   const pathArr = path.split('/').filter(p => p);
   const len = pathArr.length;
-  const arr = [<span key={0}>{` root `}</span>];
+  const arr = [
+    <span onClick={() => onClickPath('/')} style={{ cursor: 'pointer' }} key={0}>{` root `}</span>
+  ];
 
   pathArr.map((p, _) => {
     _ === len - 1
@@ -18,7 +21,13 @@ export const renderPath = (path: string) => {
             / {p}
           </span>
         )
-      : arr.push(<span key={_ + 1}>{` / ${p} `}</span>);
+      : arr.push(
+          <span
+            onClick={() => onClickPath(p)}
+            style={{ cursor: 'pointer' }}
+            key={_ + 1}
+          >{` / ${p} `}</span>
+        );
   });
 
   return arr;
@@ -27,6 +36,10 @@ export const renderPath = (path: string) => {
 interface IProps extends NavContextProps {}
 
 const NavigationComp = (props: IProps) => {
+  const onClickPath = (path: string) => {
+    props.onUpdatePath(_.trim(`${_.split(props.currentPath, path)[0]}${path}`));
+  };
+
   return (
     <Container>
       <div
@@ -37,7 +50,7 @@ const NavigationComp = (props: IProps) => {
       >
         <GoBack fill={props.currentPath === '/' ? '#acb9c3' : '#545B61'} />
       </div>
-      <Path>{renderPath(props.currentPath)}</Path>
+      <Path>{renderPath(props.currentPath, onClickPath)}</Path>
     </Container>
   );
 };

@@ -81,6 +81,16 @@ export const dummyFileSystem: Record<string, FileType> = {
     parentPath: '/docs',
     path: '/docs/work'
   },
+  '2d03459789f153918dfc0be413fe9986': {
+    isDir: true,
+    name: 'study',
+    creatorName: 'Shubham Singh',
+    size: 200,
+    createdAt: '2019-04-29',
+    parentId: '5f2b4d35489a8617e574060b19b7cad9',
+    parentPath: '/docs/work',
+    path: '/docs/work/study'
+  },
   '8f7c5959dbb088c0aef8b145dbdf6e43': {
     isDir: false,
     name: 'c.pdf',
