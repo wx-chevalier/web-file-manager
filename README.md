@@ -22,8 +22,8 @@ export default function Simple() {
 
 ## Roadmap
 
-- [ ] 使用 react-beautiful-dnd 添加拖拽功能
 - [ ] 允许传入自定义的渲染函数
+- [ ] 使用 react-beautiful-dnd 添加拖拽功能
 
 ## Motivation & Credits
 
