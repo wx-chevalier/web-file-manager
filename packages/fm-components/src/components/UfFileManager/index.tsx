@@ -16,6 +16,7 @@ interface IProps {
 
   onAdd?: (file: FileType) => void;
   onDelete?: (id: string) => void;
+  onEnter?: Function;
 }
 
 interface IState {
@@ -45,7 +46,14 @@ export class UfFileManager extends Component<IProps, IState> {
     const { currentPath } = this.state;
 
     return (
-      <NavContext.Provider value={{ fileMap, currentPath, onUpdatePath: this.onUpdatePath }}>
+      <NavContext.Provider
+        value={{
+          fileMap,
+          currentPath,
+          onEnter: this.props.onEnter,
+          onUpdatePath: this.onUpdatePath
+        }}
+      >
         {withSEO && (
           <SEO
             url={currentPath}

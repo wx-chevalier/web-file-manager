@@ -11,7 +11,10 @@ interface IProps extends NavContextProps {
   onDelete: (id: string) => void;
 }
 
-class FileGridComp extends Component<IProps> {
+interface IState {}
+
+class FileGridComp extends Component<IProps, IState> {
+  state = {};
   // 判断路径是否准确，不准确则跳转到根路径
   componentDidMount() {
     if (!getPathSet(this.props.fileMap).has(this.props.currentPath)) {
