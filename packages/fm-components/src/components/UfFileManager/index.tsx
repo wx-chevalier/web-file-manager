@@ -17,6 +17,7 @@ interface IProps {
   onAdd?: (file: FileType) => void;
   onDelete?: (id: string) => void;
   onEnter?: Function;
+  renderFilePreview?: (file: FileType) => void;
 }
 
 interface IState {

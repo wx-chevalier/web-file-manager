@@ -20,6 +20,11 @@ export default function Simple() {
 
 # About
 
+## Roadmap
+
+- [ ] 使用 react-beautiful-dnd 添加拖拽功能
+- [ ] 允许传入自定义的渲染函数
+
 ## Motivation & Credits
 
 - [el-file #Project#](https://github.com/mflorence99/el-file): The Elf file manager is the latest. My motivation throughout has partly been that few Linux tools have the kind of rich UI you can build today with tools like Angular and Material Design.
