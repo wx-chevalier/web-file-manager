@@ -14,12 +14,14 @@ interface IProps {
   currentPath?: string;
   withSEO?: boolean;
 
+  addFileElement?: JSX.Element;
+
   onAdd?: (file: FileType) => void;
   onDelete?: (id: string) => void;
   onEnter?: Function;
   onMoveTo?: (file: FileType) => void;
   onCopyTo?: (file: FileType) => void;
-  renderFilePreview?: (file: FileType) => void;
+  onClickPreview?: (file: FileType) => void;
 }
 
 interface IState {
