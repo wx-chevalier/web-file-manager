@@ -18,7 +18,7 @@ interface IProps {
 
   onAdd?: (file: FileType) => void;
   onDelete?: (id: string) => void;
-  onEnter?: Function;
+  onEnter?: (id: string) => void;
   onMoveTo?: (file: FileType) => void;
   onCopyTo?: (file: FileType) => void;
   onClickPreview?: (file: FileType) => void;
@@ -56,7 +56,8 @@ export class UfFileManager extends Component<IProps, IState> {
           fileMap,
           currentPath,
           onEnter: this.props.onEnter,
-          onUpdatePath: this.onUpdatePath
+          onUpdatePath: this.onUpdatePath,
+          onClickPreview: this.props.onClickPreview
         }}
       >
         {withSEO && (

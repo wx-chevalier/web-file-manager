@@ -35,9 +35,11 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
+    "@types/react-beautiful-dnd": "^12.1.1",
     "formik": "^2.1.4",
     "lodash": "^4.17.15",
     "react": "^16.8.6",
+    "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "styled-components": "^5.0.1",
