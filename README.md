@@ -27,6 +27,8 @@ export default function Simple() {
 
 ## Motivation & Credits
 
+### File Manager
+
 - [el-file #Project#](https://github.com/mflorence99/el-file): The Elf file manager is the latest. My motivation throughout has partly been that few Linux tools have the kind of rich UI you can build today with tools like Angular and Material Design.
 
 - [electron-quasar-file-explorer #Project#](https://github.com/hawkeye64/electron-quasar-file-explorer): A Simple File Explorer using Vue/Quasar/Electron
@@ -36,3 +38,7 @@ export default function Simple() {
 - [filemanager #Project#](https://github.com/OpusCapita/filemanager): React based FileManager for browser ( + FS REST API for Node.js and Express)
 
 - [file-system-react #Project#](https://github.com/imshubhamsingh/file-system-react): File System UI in Web using react.
+
+### File Preview
+
+- [wopihost #Project#](https://github.com/ethendev/wopihost): 基于 wopi 协议开发的 WopiHost , 支持 word, excel，ppt, pdf(仅支持预览)等文档的预览和编辑。
