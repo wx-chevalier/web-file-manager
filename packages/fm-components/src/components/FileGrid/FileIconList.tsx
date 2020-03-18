@@ -78,11 +78,10 @@ const Wrapper = styled.div`
 const DropZone = styled.div`
   display: flex;
   align-items: start;
-  min-width: 600px;
   min-height: 60px;
 `;
 
 const Container = styled.div`
-  flex-grow: 1;
+  flex-grow: 0;
   display: inline-flex;
 `;

@@ -93,6 +93,7 @@ class FileGridComp extends Component<IProps, IState> {
         </DragDropContext>
         <Add
           onAdd={value => {
+            console.log(value);
             this.props.onAdd({
               ...value,
               parentId: getParentIdByPath(currentPath, fileMap),

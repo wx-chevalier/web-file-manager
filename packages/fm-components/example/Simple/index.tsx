@@ -13,6 +13,10 @@ export default function Simple() {
     <UfFileManager
       fileMap={dummyFileSystem}
       currentPath="/apps"
+      addFileElement={<div>点击上传</div>}
+      onAdd={file => {
+        console.log(file);
+      }}
       onEnter={consoleEntry}
       onClickPreview={(entry: FileType) => alert(`preview ${entry.name}`)}
     />

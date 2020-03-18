@@ -233,7 +233,7 @@ class FileIconComp extends Component<IProps, IState> {
           <FileInfo
             title="File Info"
             style={this.state.prevStyle}
-            closeFn={() =>
+            onClose={() =>
               this.setState({
                 showInfo: false
               })

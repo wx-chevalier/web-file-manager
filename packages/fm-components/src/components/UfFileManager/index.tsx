@@ -47,7 +47,15 @@ export class UfFileManager extends Component<IProps, IState> {
   };
 
   render() {
-    const { fileMap, withSEO, onAdd, onDelete } = this.props;
+    const {
+      fileMap,
+      withSEO,
+      addFileElement,
+      onAdd,
+      onDelete,
+      onEnter,
+      onClickPreview
+    } = this.props;
     const { currentPath } = this.state;
 
     return (
@@ -55,9 +63,10 @@ export class UfFileManager extends Component<IProps, IState> {
         value={{
           fileMap,
           currentPath,
-          onEnter: this.props.onEnter,
+          addFileElement,
+          onEnter,
           onUpdatePath: this.onUpdatePath,
-          onClickPreview: this.props.onClickPreview
+          onClickPreview
         }}
       >
         {withSEO && (

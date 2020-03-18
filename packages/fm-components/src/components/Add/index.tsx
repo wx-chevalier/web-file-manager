@@ -15,9 +15,9 @@ export function AddComp(props: IProps) {
       <Container onClick={() => handleOpen(true)}>+</Container>
       {open ? (
         <FileCreator
-          title="Create New"
-          closeFn={() => handleOpen(false)}
+          title="上传模型/新建目录"
           onAdd={(value: FileType) => props.onAdd(value)}
+          onClose={() => handleOpen(false)}
         />
       ) : (
         ''
@@ -38,6 +38,6 @@ const Container = styled.div`
   align-items: center;
   font-size: 30px;
   color: #dee0e4;
-  margin: -6px 21px;
+  margin: 0 16px;
   cursor: copy;
 `;

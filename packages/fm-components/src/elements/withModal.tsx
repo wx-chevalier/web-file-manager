@@ -10,7 +10,7 @@ export interface ModalProps {
   isDraggale?: boolean;
   title?: string;
 
-  closeFn?: Function;
+  onClose?: Function;
 }
 
 export interface IModalState {
@@ -102,7 +102,7 @@ export const withModal = <CompProps extends ModalProps>(WrappedComponent: React.
         >
           <Heading>
             <Title>{this.props.title}</Title>
-            <Close onClick={this.props.closeFn as React.MouseEventHandler}>
+            <Close onClick={this.props.onClose as React.MouseEventHandler}>
               <SvgIcon name="close" size={15} color="#82878B" />
             </Close>
           </Heading>
