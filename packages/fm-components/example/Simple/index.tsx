@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { UfFileManager } from '../../src';
+import { FileType, UfFileManager } from '../../src';
 
 import { dummyFileSystem } from './dummyFileSystem';
 
@@ -9,5 +9,12 @@ const consoleEntry = (param?: any) => {
 };
 
 export default function Simple() {
-  return <UfFileManager fileMap={dummyFileSystem} currentPath="/apps" onEnter={consoleEntry} />;
+  return (
+    <UfFileManager
+      fileMap={dummyFileSystem}
+      currentPath="/apps"
+      onEnter={consoleEntry}
+      onClickPreview={(entry: FileType) => alert(`preview ${entry.name}`)}
+    />
+  );
 }

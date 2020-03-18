@@ -1,4 +1,5 @@
 import React, { Component, createRef } from 'react';
+import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
 import { SvgIcon } from '../../elements/SvgIcon';
@@ -11,6 +12,9 @@ import { Container, Logo, Name } from './styles';
 interface IProps extends NavContextProps {
   index: number | string;
   entry: FileType;
+
+  provided?: DraggableProvided;
+  snapshot?: DraggableStateSnapshot;
 
   onDelete: Function;
 }
@@ -159,9 +163,10 @@ class FileIconComp extends Component<IProps, IState> {
 
   enterFolder = () => {
     if (this.props.entry.isDir) {
-      const { entry, onEnter, onUpdatePath } = this.props;
+      const { entry, onUpdatePath } = this.props;
 
-      onEnter(entry);
+      // 传入的 onEnter 则执行
+      this.props.onEnter && this.props.onEnter(entry.id);
       onUpdatePath(this.props.entry.path);
     } else {
       // 对于文件夹，直接打开
@@ -200,6 +205,8 @@ class FileIconComp extends Component<IProps, IState> {
                 onClick: () => {
                   entry.isDir
                     ? this.props.onUpdatePath(this.props.entry.path)
+                    : this.props.onClickPreview
+                    ? this.props.onClickPreview(this.props.entry)
                     : this.setState({
                         showInfo: true
                       });
