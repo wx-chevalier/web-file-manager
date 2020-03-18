@@ -25,7 +25,7 @@
     "clean": "yarn workspaces run clean",
     "clean:cov": "yarn workspaces run clean:cov",
     "dev": "npm start",
-    "lint": "./scripts/tools/lint_all.sh",
+    "lint": "yarn workspaces run lint",
     "lint-staged": "lint-staged",
     "postinstall": "node ./node_modules/husky/lib/installer/bin install",
     "prettier-all": "prettier --write 'packages/**/src/**/*.{ts,tsx}' '!src/{assets,datas}/**'",

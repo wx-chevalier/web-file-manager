@@ -35,7 +35,6 @@ function FileCreatorComp(_props: IProps) {
           type: 'file',
           name: '',
           creatorName: '',
-          size: 0,
           date: getTodayDate()
         }}
         validate={values => {
@@ -84,18 +83,6 @@ function FileCreatorComp(_props: IProps) {
               ) : (
                 ''
               )}
-            </div>
-
-            <div className="formField">
-              <Field
-                placeholder="Size"
-                type="number"
-                onChange={props.handleChange}
-                name="size"
-                className="field"
-                min="0"
-                value={props.values.size}
-              />
             </div>
 
             <div className="formField">

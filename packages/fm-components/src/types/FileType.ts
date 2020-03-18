@@ -8,13 +8,13 @@ export interface FileType {
   ext?: string;
 
   // 名称
-  name: string;
+  name?: string;
   // 创建者
-  creatorName: string;
+  creatorName?: string;
   // 路径，完整的文件路径
   path?: string;
   // 大小 in Bytes
-  size: number;
+  size?: number;
 
   // 创建、更新、删除的时间
   createdAt?: string;
