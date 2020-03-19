@@ -16,9 +16,9 @@ interface IProps extends NavContextProps {
 
 class SearchResultsComp extends Component<IProps> {
   onClick = (file: FileType) => {
-    const path = !file.isDir ? file.parentPath : file.path;
+    const dirId = !file.isDir ? file.parentId : file.id;
 
-    this.props.onUpdatePath(path);
+    this.props.onUpdateCurrentDir(dirId);
     this.props.onResultClose();
   };
 

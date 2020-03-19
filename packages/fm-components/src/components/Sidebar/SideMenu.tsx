@@ -45,9 +45,9 @@ class SideMenuComp extends Component<IProps, IState> {
           if (!flag) {
             return (
               <LinkContainer
-                key={entry.path}
-                onClick={() => this.props.onUpdatePath(entry.path)}
-                className={this.props.currentPath === entry.path ? 'selected' : ''}
+                key={entry.id}
+                onClick={() => this.props.onUpdateCurrentDir(entry.id)}
+                className={this.props.currentDirId === entry.id ? 'selected' : ''}
               >
                 <div className="link" style={{ marginLeft: `${10 * i}px` }}>
                   {entry.name}
@@ -56,13 +56,13 @@ class SideMenuComp extends Component<IProps, IState> {
             );
           }
           return (
-            <Collapse index={i} key={entry.path}>
+            <Collapse index={i} key={entry.id}>
               {(visible: boolean, setVisible: Function) => {
                 return (
                   <Fragment>
                     <LinkContainer
-                      key={entry.path}
-                      className={this.props.currentPath === entry.path ? 'selected' : ''}
+                      key={entry.id}
+                      className={this.props.currentDirId === entry.id ? 'selected' : ''}
                     >
                       <div
                         className="link"
@@ -70,7 +70,7 @@ class SideMenuComp extends Component<IProps, IState> {
                           marginLeft: `${10 * i}px`,
                           width: '100%'
                         }}
-                        onClick={() => this.props.onUpdatePath(entry.path)}
+                        onClick={() => this.props.onUpdateCurrentDir(entry.id)}
                       >
                         {entry.name}
                       </div>

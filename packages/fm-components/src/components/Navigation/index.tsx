@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
-import { getGoBackPath } from '../../types';
+import { getRootDirId, getIdByPath } from '../../types';
 
 import { Container, Path } from './styles';
 import GoBack from './GoBack';
@@ -17,7 +17,7 @@ export const renderPath = (path: string, onClickPath?: Function) => {
   pathArr.map((p, _) => {
     _ === len - 1
       ? arr.push(
-          <span className="currentPath" key={_ + 1}>
+          <span className="currentDirId" key={_ + 1}>
             / {p}
           </span>
         )
@@ -37,20 +37,27 @@ interface IProps extends NavContextProps {}
 
 const NavigationComp = (props: IProps) => {
   const onClickPath = (path: string) => {
-    props.onUpdatePath(_.trim(`${_.split(props.currentPath, path)[0]}${path}`));
+    props.onUpdateCurrentDir(getIdByPath(path, props.fileMap));
   };
+
+  const rootId = getRootDirId(props.fileMap);
 
   return (
     <Container>
       <div
         style={{ marginTop: 3, cursor: 'pointer' }}
         onClick={() => {
-          props.currentPath === '/' ? null : props.onUpdatePath(getGoBackPath(props.currentPath));
+          if (props.currentDirId !== rootId && props.fileMap[props.currentDirId]) {
+            props.onUpdateCurrentDir(props.fileMap[props.currentDirId].parentId);
+          }
         }}
       >
-        <GoBack fill={props.currentPath === '/' ? '#acb9c3' : '#545B61'} />
+        <GoBack fill={props.currentDirId === rootId ? '#acb9c3' : '#545B61'} />
       </div>
-      <Path>{renderPath(props.currentPath, onClickPath)}</Path>
+      <Path>
+        {props.fileMap[props.currentDirId] &&
+          renderPath(props.fileMap[props.currentDirId].path, onClickPath)}
+      </Path>
     </Container>
   );
 };

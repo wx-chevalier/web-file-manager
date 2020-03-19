@@ -12,8 +12,8 @@ export default function Simple() {
   return (
     <UfFileManager
       fileMap={dummyFileSystem}
-      currentPath="/apps"
-      addFileElement={<div>点击上传</div>}
+      currentDirId="1382b6993e9f270cb1c29833be3f5750"
+      renderAddFileElement={() => <div>点击上传</div>}
       onAdd={file => {
         console.log(file);
       }}

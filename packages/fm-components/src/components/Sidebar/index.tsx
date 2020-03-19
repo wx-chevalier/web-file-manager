@@ -10,7 +10,7 @@ interface IProps extends NavContextProps {
   fileTree: FileType[];
 }
 
-const SidebarComp = ({ fileTree, onUpdatePath }: IProps) => {
+const SidebarComp = ({ fileTree, onUpdateCurrentDir }: IProps) => {
   const children = fileTree[0].children;
 
   const [toggle, handleToggle] = useState(true);
@@ -21,7 +21,7 @@ const SidebarComp = ({ fileTree, onUpdatePath }: IProps) => {
       <a
         className="rootLink"
         onClick={() => {
-          onUpdatePath('/');
+          onUpdateCurrentDir('/');
         }}
       >
         <Root />

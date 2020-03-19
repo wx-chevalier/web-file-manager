@@ -20,7 +20,7 @@ export const Path = styled.p`
   text-overflow: ellipsis;
   direction: rtl;
 
-  & .currentPath {
+  & .currentDirId {
     color: #001800;
   }
 `;

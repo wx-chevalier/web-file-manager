@@ -30,8 +30,8 @@ function FileCreatorComp(_props: IProps) {
         </Toggle.Container>
       </Top>
 
-      {!isDir && _props.addFileElement ? (
-        _props.addFileElement
+      {!isDir && _props.renderAddFileElement ? (
+        _props.renderAddFileElement({ onClose: _props.onClose })
       ) : (
         <Formik
           initialValues={{

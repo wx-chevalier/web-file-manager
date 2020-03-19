@@ -1,6 +1,8 @@
 export interface FileType {
   // ID
   id?: string;
+  // 父文件夹 id
+  parentId?: string | null;
 
   // 是否为目录
   isDir: boolean;
@@ -20,11 +22,6 @@ export interface FileType {
   createdAt?: string;
   updatedAt?: string;
   deletedAt?: string;
-
-  // 父路径，对于文件，就是所在文件夹的路径；对于文件夹，就是父文件夹路径
-  parentPath?: string | null;
-  // 父文件夹 id
-  parentId?: string | null;
 
   // 子路径，字符串或者文件类型
   childrenIds?: string[];

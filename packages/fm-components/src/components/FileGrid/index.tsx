@@ -3,7 +3,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
-import { FileType, getParentIdByPath, getPathFiles, getPathSet } from '../../types';
+import { FileType, getDirFiles, getPathSet, getRootDirId } from '../../types';
 import { Add } from '../Add';
 
 import { FileIconList } from './FileIconList';
@@ -27,19 +27,25 @@ class FileGridComp extends Component<IProps, IState> {
   }
   // 判断路径是否准确，不准确则跳转到根路径
   componentDidMount() {
-    if (!getPathSet(this.props.fileMap).has(this.props.currentPath)) {
-      this.props.onUpdatePath('/');
+    if (!getPathSet(this.props.fileMap).has(this.props.currentDirId)) {
+      this.props.onUpdateCurrentDir(getRootDirId(this.props.fileMap));
+    } else {
+      this.onRefresh(this.props);
     }
   }
 
   componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.currentPath !== this.props.currentPath) {
-      const { currentPath, fileMap } = nextProps;
-
-      const files = getPathFiles(currentPath, fileMap);
-
-      this.setState({ files });
+    if (nextProps.currentDirId !== this.props.currentDirId) {
+      this.onRefresh(nextProps);
     }
+  }
+
+  onRefresh(props: IProps) {
+    const { currentDirId, fileMap } = props;
+
+    const files = getDirFiles(currentDirId, fileMap);
+
+    this.setState({ files });
   }
 
   // shouldComponentUpdate(nextProps, nextState) {
@@ -84,7 +90,7 @@ class FileGridComp extends Component<IProps, IState> {
   };
 
   render() {
-    const { currentPath, fileMap, onDelete } = this.props;
+    const { currentDirId, onDelete } = this.props;
 
     return (
       <Container>
@@ -96,8 +102,7 @@ class FileGridComp extends Component<IProps, IState> {
             console.log(value);
             this.props.onAdd({
               ...value,
-              parentId: getParentIdByPath(currentPath, fileMap),
-              parentPath: currentPath
+              parentId: currentDirId
             });
           }}
         />

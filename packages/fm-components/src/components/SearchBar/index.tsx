@@ -1,7 +1,7 @@
 import React, { Component, createRef } from 'react';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
-import { FileType, SearchType, getPathFiles } from '../../types';
+import { FileType, SearchType, getDirFiles } from '../../types';
 
 import { Container, Input, Line } from './styles';
 import Filter from './Filter';
@@ -42,7 +42,7 @@ class SearchBarComp extends Component<IProps, IState> {
   };
 
   render() {
-    const { fileMap, currentPath } = this.props;
+    const { fileMap, currentDirId } = this.props;
 
     return (
       <Input placeholder="Search for anything" ref={this._ref}>
@@ -70,7 +70,7 @@ class SearchBarComp extends Component<IProps, IState> {
               term={this.state.term}
               data={
                 this.state.mode === 'LOCAL'
-                  ? getPathFiles(currentPath, fileMap)
+                  ? getDirFiles(currentDirId, fileMap)
                   : Object.keys(fileMap).map(id => fileMap[id])
               }
               onResultClose={() => this.setState({ term: '' })}

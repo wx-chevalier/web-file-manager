@@ -11,10 +11,10 @@ import { SEO } from '../SEO';
 
 interface IProps {
   fileMap: Record<string, FileType>;
-  currentPath?: string;
+  currentDirId?: string;
   withSEO?: boolean;
 
-  addFileElement?: JSX.Element;
+  renderAddFileElement?: ({ onClose }: { onClose: Function }) => JSX.Element;
 
   onAdd?: (file: FileType) => void;
   onDelete?: (id: string) => void;
@@ -25,7 +25,7 @@ interface IProps {
 }
 
 interface IState {
-  currentPath: string;
+  currentDirId: string;
 }
 
 export class UfFileManager extends Component<IProps, IState> {
@@ -33,48 +33,48 @@ export class UfFileManager extends Component<IProps, IState> {
     withSEO: false
   };
 
-  state = { currentPath: this.props.currentPath || '/' };
+  state = { currentDirId: this.props.currentDirId };
 
   componentWillReceiveProps(nextProps: IProps) {
     // 当外部传入的 Path 发生变化时候
-    if (nextProps.currentPath !== this.props.currentPath) {
-      this.onUpdatePath(nextProps.currentPath);
+    if (nextProps.currentDirId !== this.props.currentDirId) {
+      this.onUpdateCurrentDir(nextProps.currentDirId);
     }
   }
 
-  onUpdatePath = (currentPath: string) => {
-    this.setState({ currentPath });
+  onUpdateCurrentDir = (currentDirId: string) => {
+    this.setState({ currentDirId });
   };
 
   render() {
     const {
       fileMap,
       withSEO,
-      addFileElement,
+      renderAddFileElement,
       onAdd,
       onDelete,
       onEnter,
       onClickPreview
     } = this.props;
-    const { currentPath } = this.state;
+    const { currentDirId } = this.state;
 
     return (
       <NavContext.Provider
         value={{
           fileMap,
-          currentPath,
-          addFileElement,
+          currentDirId,
+          renderAddFileElement,
           onEnter,
-          onUpdatePath: this.onUpdatePath,
+          onUpdateCurrentDir: this.onUpdateCurrentDir,
           onClickPreview
         }}
       >
         {withSEO && (
           <SEO
-            url={currentPath}
-            title={currentPath}
+            url={currentDirId}
+            title={currentDirId}
             image={((<SvgIcon name="folder" size={50} />) as unknown) as string}
-            description={currentPath}
+            description={currentDirId}
           />
         )}
         <Container className={`${classPrefix}-file-manager-container`}>
