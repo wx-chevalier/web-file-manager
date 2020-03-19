@@ -35,7 +35,10 @@ class FileGridComp extends Component<IProps, IState> {
   }
 
   componentWillReceiveProps(nextProps: IProps) {
-    if (nextProps.currentDirId !== this.props.currentDirId) {
+    if (
+      nextProps.currentDirId !== this.props.currentDirId ||
+      nextProps.fileMap !== this.props.fileMap
+    ) {
       this.onRefresh(nextProps);
     }
   }

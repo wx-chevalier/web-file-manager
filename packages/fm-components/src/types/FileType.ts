@@ -26,4 +26,7 @@ export interface FileType {
   // 子路径，字符串或者文件类型
   childrenIds?: string[];
   children?: FileType[];
+
+  // 用于记述原始对象
+  originObj?: any;
 }
