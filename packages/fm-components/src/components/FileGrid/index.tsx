@@ -3,7 +3,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
-import { FileType, getDirFiles, getPathSet, getRootDirId } from '../../types';
+import { FileType, getDirFiles } from '../../types';
 import { Add } from '../Add';
 
 import { FileIconList } from './FileIconList';
@@ -27,9 +27,7 @@ class FileGridComp extends Component<IProps, IState> {
   }
   // 判断路径是否准确，不准确则跳转到根路径
   componentDidMount() {
-    if (!getPathSet(this.props.fileMap).has(this.props.currentDirId)) {
-      this.props.onUpdateCurrentDir(getRootDirId(this.props.fileMap));
-    } else {
+    if (this.props.currentDirId && this.props.fileMap) {
       this.onRefresh(this.props);
     }
   }
