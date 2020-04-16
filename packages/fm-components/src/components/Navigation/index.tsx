@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
-import { getRootDirId, getIdByPath } from '../../types';
+import { getIdByPath, getRootDirId } from '../../types';
 
 import { Container, Path } from './styles';
 import GoBack from './GoBack';

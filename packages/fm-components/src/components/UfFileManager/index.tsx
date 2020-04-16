@@ -44,18 +44,14 @@ export class UfFileManager extends Component<IProps, IState> {
 
   onUpdateCurrentDir = (currentDirId: string) => {
     this.setState({ currentDirId });
+
+    if (this.props.onEnter) {
+      this.props.onEnter(currentDirId);
+    }
   };
 
   render() {
-    const {
-      fileMap,
-      withSEO,
-      renderAddFileElement,
-      onAdd,
-      onDelete,
-      onEnter,
-      onClickPreview
-    } = this.props;
+    const { fileMap, withSEO, renderAddFileElement, onAdd, onDelete, onClickPreview } = this.props;
     const { currentDirId } = this.state;
 
     return (
@@ -64,7 +60,6 @@ export class UfFileManager extends Component<IProps, IState> {
           fileMap,
           currentDirId,
           renderAddFileElement,
-          onEnter,
           onUpdateCurrentDir: this.onUpdateCurrentDir,
           onClickPreview
         }}

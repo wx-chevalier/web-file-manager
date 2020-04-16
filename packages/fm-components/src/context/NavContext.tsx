@@ -7,7 +7,6 @@ export interface NavContextProps {
   fileMap?: Record<string, FileType>;
   renderAddFileElement?: ({ onClose }: { onClose: Function }) => void;
 
-  onEnter?: (id: string) => void;
   onUpdateCurrentDir?: (newPath: string) => void;
   onClickPreview?: (file: FileType) => void;
 }
@@ -20,19 +19,11 @@ export const withContext = <P extends object>(
   Component: React.ComponentType<P>
 ): React.FC<Omit<P, keyof NavContextProps>> => props => (
   <NavContext.Consumer>
-    {({
-      fileMap,
-      renderAddFileElement,
-      currentDirId,
-      onUpdateCurrentDir,
-      onEnter,
-      onClickPreview
-    }) => (
+    {({ fileMap, renderAddFileElement, currentDirId, onUpdateCurrentDir, onClickPreview }) => (
       <Component
         {...(props as P)}
         renderAddFileElement={renderAddFileElement}
         fileMap={fileMap}
-        onEnter={onEnter}
         currentDirId={currentDirId}
         onUpdateCurrentDir={onUpdateCurrentDir}
         onClickPreview={onClickPreview}

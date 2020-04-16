@@ -1,6 +1,6 @@
 {
   "name": "@unionfab/fm-components",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Unionfab File Manager",
   "repository": {
     "type": "git",
@@ -32,9 +32,9 @@
     "lint:style": "stylelint **/*.less --cache",
     "lint:ts": "tslint -p . -t stylish",
     "lint:tsc": "tsc -p tsconfig.json --incremental false --noEmit",
+    "prepublish": "npm run clean:r",
     "start": "npm run dev",
-    "storybook": "start-storybook -p 6006",
-    "prepublish": "npm run clean:r"
+    "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
     "@types/react-beautiful-dnd": "^12.1.1",

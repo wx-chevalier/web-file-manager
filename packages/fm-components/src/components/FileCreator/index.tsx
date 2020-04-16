@@ -1,4 +1,4 @@
-import { Field, Formik, Form as FForm } from 'formik';
+import { Field, Form as FForm, Formik } from 'formik';
 import React, { useState } from 'react';
 
 import { NavContextProps, withContext } from '../../context/NavContext';

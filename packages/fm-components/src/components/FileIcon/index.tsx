@@ -163,10 +163,8 @@ class FileIconComp extends Component<IProps, IState> {
 
   enterFolder = () => {
     if (this.props.entry.isDir) {
-      const { entry, onUpdateCurrentDir } = this.props;
+      const { onUpdateCurrentDir } = this.props;
 
-      // 传入的 onEnter 则执行
-      this.props.onEnter && this.props.onEnter(entry.id);
       onUpdateCurrentDir(this.props.entry.id);
     } else {
       // 对于文件夹，直接打开
