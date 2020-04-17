@@ -11,7 +11,7 @@ export const dummyFileSystem: Record<string, FileType> = {
   '31259': {
     id: '31259',
     name: '1.stl.zlib',
-    isDir: false,
+    isDir: true,
     parentId: '0'
   },
   '31260': {
@@ -22,6 +22,18 @@ export const dummyFileSystem: Record<string, FileType> = {
   },
   '31261': {
     id: '31261',
+    name: '2.stl.zlib',
+    isDir: false,
+    parentId: '0'
+  },
+  '31262': {
+    id: '31262',
+    name: '2.netfabb.stl.zlib',
+    isDir: false,
+    parentId: '0'
+  },
+  '31263': {
+    id: '31263',
     name: '2.stl.zlib',
     isDir: false,
     parentId: '0'

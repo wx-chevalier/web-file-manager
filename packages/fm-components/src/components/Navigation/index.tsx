@@ -7,7 +7,7 @@ import { getIdByPath, getRootDirId } from '../../types';
 import { Container, Path } from './styles';
 import GoBack from './GoBack';
 
-export const renderPath = (path: string, onClickPath?: Function) => {
+export const renderPath = (path = '', onClickPath?: Function) => {
   const pathArr = path.split('/').filter(p => p);
   const len = pathArr.length;
   const arr = [
@@ -48,7 +48,9 @@ const NavigationComp = (props: IProps) => {
         style={{ marginTop: 3, cursor: 'pointer' }}
         onClick={() => {
           if (props.currentDirId !== rootId && props.fileMap[props.currentDirId]) {
-            props.onUpdateCurrentDir(props.fileMap[props.currentDirId].parentId);
+            if (props.fileMap[props.currentDirId]) {
+              props.onUpdateCurrentDir(props.fileMap[props.currentDirId].parentId);
+            }
           }
         }}
       >

@@ -10,6 +10,7 @@ interface FileIconListProps {
   listType?: string;
   internalScroll?: boolean;
   isCombineEnabled?: boolean;
+  extraEle?: JSX.Element;
 
   onDelete: (id: string) => void;
 }
@@ -18,7 +19,7 @@ interface FileIconListState {}
 
 export class FileIconList extends React.Component<FileIconListProps, FileIconListState> {
   renderFileIcon = (dropProvided: DroppableProvided) => {
-    const { files, onDelete } = this.props;
+    const { files, extraEle, onDelete } = this.props;
     return (
       <Container>
         <DropZone ref={dropProvided.innerRef}>
@@ -42,6 +43,7 @@ export class FileIconList extends React.Component<FileIconListProps, FileIconLis
               )}
             </Draggable>
           ))}
+          {extraEle}
         </DropZone>
       </Container>
     );
@@ -79,6 +81,7 @@ const DropZone = styled.div`
   display: flex;
   align-items: start;
   min-height: 60px;
+  flex-wrap: wrap;
 `;
 
 const Container = styled.div`

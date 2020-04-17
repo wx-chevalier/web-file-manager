@@ -96,17 +96,23 @@ class FileGridComp extends Component<IProps, IState> {
     return (
       <Container>
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <FileIconList files={this.state.files} listType="FileIconList" onDelete={onDelete} />
+          <FileIconList
+            files={this.state.files}
+            listType="FileIconList"
+            extraEle={
+              <Add
+                onAdd={value => {
+                  console.log(value);
+                  this.props.onAdd({
+                    ...value,
+                    parentId: currentDirId
+                  });
+                }}
+              />
+            }
+            onDelete={onDelete}
+          />
         </DragDropContext>
-        <Add
-          onAdd={value => {
-            console.log(value);
-            this.props.onAdd({
-              ...value,
-              parentId: currentDirId
-            });
-          }}
-        />
       </Container>
     );
   }
