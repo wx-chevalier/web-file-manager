@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DragUpdate, DropResult } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
@@ -10,11 +11,12 @@ import { FileIconList } from './FileIconList';
 
 interface IProps extends NavContextProps {
   onAdd: (file: FileType) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, isDir: boolean) => void;
 }
 
 interface IState {
   files: FileType[];
+  isDisableCombine: boolean;
 }
 
 class FileGridComp extends Component<IProps, IState> {
@@ -22,7 +24,8 @@ class FileGridComp extends Component<IProps, IState> {
     super(props);
 
     this.state = {
-      files: []
+      files: [],
+      isDisableCombine: false
     };
   }
   // 判断路径是否准确，不准确则跳转到根路径
@@ -60,6 +63,7 @@ class FileGridComp extends Component<IProps, IState> {
   // }
 
   onDragEnd = (result: DropResult) => {
+    this.setState({ isDisableCombine: false });
     // super simple, just removing the dragging item
     if (result.combine) {
       const files: FileType[] = [...this.state.files];
@@ -90,15 +94,35 @@ class FileGridComp extends Component<IProps, IState> {
     }
   };
 
+  onDragUpdate = (result: DragUpdate) => {
+    const { files } = this.state;
+    const { combine } = result;
+
+    // 要移动的目标文件或目录
+    const resp = (files || []).find(f => _.endsWith(result.draggableId, f.id));
+
+    if (combine) {
+      // 要移入的目标文件或目录
+      const target = (files || []).find(f => _.endsWith(combine.draggableId, f.id));
+
+      if (!resp.isDir) {
+        // 当两者都为文件时禁止合并
+        this.setState({ isDisableCombine: !target.isDir && !resp.isDir });
+      }
+    }
+  };
+
   render() {
-    const { currentDirId, onDelete } = this.props;
+    const { isDisableCombine, files } = this.state;
+    const { currentDirId, isCombineEnabled, onDelete } = this.props;
 
     return (
       <Container>
-        <DragDropContext onDragEnd={this.onDragEnd}>
+        <DragDropContext onDragEnd={this.onDragEnd} onDragUpdate={this.onDragUpdate}>
           <FileIconList
-            files={this.state.files}
+            files={files}
             listType="FileIconList"
+            isCombineEnabled={isCombineEnabled && !isDisableCombine}
             extraEle={
               <Add
                 onAdd={value => {

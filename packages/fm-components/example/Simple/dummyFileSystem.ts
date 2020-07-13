@@ -12,7 +12,8 @@ export const dummyFileSystem: Record<string, FileType> = {
     id: '31259',
     name: '1.stl.zlib',
     isDir: true,
-    parentId: '0'
+    parentId: '0',
+    path: '/1.stl.zlib'
   },
   '31260': {
     id: '31260',
@@ -37,6 +38,20 @@ export const dummyFileSystem: Record<string, FileType> = {
     name: '2.stl.zlib',
     isDir: false,
     parentId: '0'
+  },
+  '31264': {
+    id: '31264',
+    name: 'test1',
+    isDir: true,
+    parentId: '31259',
+    path: '/1.stl.zlib/test1'
+  },
+  '31265': {
+    id: '31265',
+    name: 'test2',
+    isDir: true,
+    parentId: '31264',
+    path: '/1.stl.zlib/test1/test2'
   }
 };
 // {

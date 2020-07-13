@@ -12,7 +12,7 @@ interface FileIconListProps {
   isCombineEnabled?: boolean;
   extraEle?: JSX.Element;
 
-  onDelete: (id: string) => void;
+  onDelete: (id: string, isDir: boolean) => void;
 }
 
 interface FileIconListState {}
@@ -20,11 +20,12 @@ interface FileIconListState {}
 export class FileIconList extends React.Component<FileIconListProps, FileIconListState> {
   renderFileIcon = (dropProvided: DroppableProvided) => {
     const { files, extraEle, onDelete } = this.props;
+
     return (
       <Container>
         <DropZone ref={dropProvided.innerRef}>
           {(files || []).map((entry, i) => (
-            <Draggable key={i} draggableId={`fileIconList-drag-${i}`} index={i}>
+            <Draggable key={entry.id} draggableId={`fileIconList-drag-${entry.id}`} index={i}>
               {(dragProvided, _dragSnapshot) => (
                 <div
                   ref={dragProvided.innerRef}
@@ -36,7 +37,7 @@ export class FileIconList extends React.Component<FileIconListProps, FileIconLis
                     index={i}
                     key={`${entry.path}_${entry.isDir ? 'Folder' : 'File'}`}
                     onDelete={() => {
-                      onDelete(entry.id);
+                      onDelete(entry.id, entry.isDir);
                     }}
                   />
                 </div>

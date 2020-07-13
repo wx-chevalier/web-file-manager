@@ -17,6 +17,8 @@ export default function Simple() {
       onAdd={file => {
         console.log(file);
       }}
+      onDelete={(id, isDir) => console.log(id, isDir)}
+      isCombineEnabled={true}
       onEnter={consoleEntry}
       onClickPreview={(entry: FileType) => alert(`preview ${entry.name}`)}
     />

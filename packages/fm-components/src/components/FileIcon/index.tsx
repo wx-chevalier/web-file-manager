@@ -157,8 +157,9 @@ class FileIconComp extends Component<IProps, IState> {
       });
   };
 
-  handleDelete = () => {
-    this.props.onDelete();
+  handleDelete = async () => {
+    await this.props.onDelete();
+    this.setState({ visible: false });
   };
 
   enterFolder = () => {

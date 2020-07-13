@@ -13,11 +13,12 @@ interface IProps {
   fileMap: Record<string, FileType>;
   currentDirId?: string;
   withSEO?: boolean;
+  isCombineEnabled?: boolean;
 
   renderAddFileElement?: ({ onClose }: { onClose: Function }) => JSX.Element;
 
   onAdd?: (file: FileType) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: string, isDir: boolean) => void;
   onEnter?: (id: string) => void;
   onMoveTo?: (file: FileType) => void;
   onCopyTo?: (file: FileType) => void;
@@ -51,7 +52,15 @@ export class UfFileManager extends Component<IProps, IState> {
   };
 
   render() {
-    const { fileMap, withSEO, renderAddFileElement, onAdd, onDelete, onClickPreview } = this.props;
+    const {
+      fileMap,
+      withSEO,
+      isCombineEnabled,
+      renderAddFileElement,
+      onAdd,
+      onDelete,
+      onClickPreview
+    } = this.props;
     const { currentDirId } = this.state;
 
     return (
@@ -59,6 +68,7 @@ export class UfFileManager extends Component<IProps, IState> {
         value={{
           fileMap,
           currentDirId,
+          isCombineEnabled,
           renderAddFileElement,
           onUpdateCurrentDir: this.onUpdateCurrentDir,
           onClickPreview

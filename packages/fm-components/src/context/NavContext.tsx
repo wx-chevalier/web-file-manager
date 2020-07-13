@@ -5,6 +5,7 @@ import { FileType } from '../types';
 export interface NavContextProps {
   currentDirId?: string;
   fileMap?: Record<string, FileType>;
+  isCombineEnabled?: boolean;
   renderAddFileElement?: ({ onClose }: { onClose: Function }) => void;
 
   onUpdateCurrentDir?: (newPath: string) => void;
@@ -19,14 +20,22 @@ export const withContext = <P extends object>(
   Component: React.ComponentType<P>
 ): React.FC<Omit<P, keyof NavContextProps>> => props => (
   <NavContext.Consumer>
-    {({ fileMap, renderAddFileElement, currentDirId, onUpdateCurrentDir, onClickPreview }) => (
+    {({
+      fileMap,
+      currentDirId,
+      isCombineEnabled,
+      onClickPreview,
+      onUpdateCurrentDir,
+      renderAddFileElement
+    }) => (
       <Component
         {...(props as P)}
-        renderAddFileElement={renderAddFileElement}
         fileMap={fileMap}
         currentDirId={currentDirId}
-        onUpdateCurrentDir={onUpdateCurrentDir}
+        isCombineEnabled={isCombineEnabled}
         onClickPreview={onClickPreview}
+        onUpdateCurrentDir={onUpdateCurrentDir}
+        renderAddFileElement={renderAddFileElement}
       />
     )}
   </NavContext.Consumer>
