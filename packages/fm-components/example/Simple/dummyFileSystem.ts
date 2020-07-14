@@ -10,16 +10,23 @@ export const dummyFileSystem: Record<string, FileType> = {
   },
   '31259': {
     id: '31259',
-    name: '1.stl.zlib',
+    name: '1.stl.zlibdfasdfadfasfasdfsdfasdfasdfasdfasdfasdfa',
     isDir: true,
     parentId: '0',
-    path: '/1.stl.zlib'
+    path: '/1.stl.zlibdfasdfadfasfasdfsdfasdfasdfasdfasdfasdfa'
   },
   '31260': {
     id: '31260',
     name: '2.netfabb.stl.zlib',
     isDir: false,
     parentId: '0'
+  },
+  '31267': {
+    id: '31267',
+    name: '07-07-唐司军发送到发送到发送到发送到发送到发送到发送到发顺丰',
+    isDir: true,
+    parentId: '0',
+    path: '/1.stl.zlib/test1/07-07-唐司军发送到发送到发送到发送到发送到发送到发送到发顺丰'
   },
   '31261': {
     id: '31261',
@@ -52,6 +59,22 @@ export const dummyFileSystem: Record<string, FileType> = {
     isDir: true,
     parentId: '31264',
     path: '/1.stl.zlib/test1/test2'
+  },
+  '31266': {
+    id: '31266',
+    name: '07-07-唐司军',
+    isDir: true,
+    parentId: '31264',
+    path: '/1.stl.zlib/test1/07-07-唐司军'
+  },
+
+  '31268': {
+    id: '31268',
+    name: '07-07-唐司军发送到发送到发送到发送到发送到发送到发送到发顺丰dfasdfasdfas',
+    isDir: true,
+    parentId: '0',
+    path:
+      '/1.stl.zlib/test1/07-07-唐司军发送到发送到发送到发送到发送到发送到发送到发顺丰dfasdfasdfas'
   }
 };
 // {

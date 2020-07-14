@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  height: 80px;
-  width: 96px;
+  width: 100px;
   display: flex;
   cursor: pointer;
   flex-direction: column;
@@ -41,5 +40,8 @@ export const Img = styled.img`
 `;
 
 export const Name = styled.div`
+  width: 100%;
+  text-align: center;
+  word-break: break-all;
   position: relative;
 `;

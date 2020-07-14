@@ -105,9 +105,10 @@ class FileGridComp extends Component<IProps, IState> {
       // 要移入的目标文件或目录
       const target = (files || []).find(f => _.endsWith(combine.draggableId, f.id));
 
-      if (!resp.isDir) {
-        // 当两者都为文件时禁止合并
-        this.setState({ isDisableCombine: !target.isDir && !resp.isDir });
+      if ((target.isDir && !resp.isDir) || (target.isDir && resp.isDir)) {
+        this.setState({ isDisableCombine: false });
+      } else {
+        this.setState({ isDisableCombine: true });
       }
     }
   };
