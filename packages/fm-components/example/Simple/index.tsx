@@ -20,6 +20,7 @@ export default function Simple() {
       onDelete={(id, isDir) => console.log(id, isDir)}
       isCombineEnabled={true}
       onEnter={consoleEntry}
+      onMoveTo={(ids, targetId) => console.log('ids', ids, 'target', targetId)}
       onClickPreview={(entry: FileType) => alert(`preview ${entry.name}`)}
     />
   );

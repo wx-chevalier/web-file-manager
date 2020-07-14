@@ -20,9 +20,9 @@ interface IProps {
   onAdd?: (file: FileType) => void;
   onDelete?: (id: string, isDir: boolean) => void;
   onEnter?: (id: string) => void;
-  onMoveTo?: (file: FileType) => void;
   onCopyTo?: (file: FileType) => void;
   onClickPreview?: (file: FileType) => void;
+  onMoveTo?: (ids: string[], targetCategoryId: string) => void;
 }
 
 interface IState {
@@ -59,6 +59,7 @@ export class UfFileManager extends Component<IProps, IState> {
       renderAddFileElement,
       onAdd,
       onDelete,
+      onMoveTo,
       onClickPreview
     } = this.props;
     const { currentDirId } = this.state;
@@ -69,9 +70,9 @@ export class UfFileManager extends Component<IProps, IState> {
           fileMap,
           currentDirId,
           isCombineEnabled,
+          onClickPreview,
           renderAddFileElement,
-          onUpdateCurrentDir: this.onUpdateCurrentDir,
-          onClickPreview
+          onUpdateCurrentDir: this.onUpdateCurrentDir
         }}
       >
         {withSEO && (
@@ -87,7 +88,7 @@ export class UfFileManager extends Component<IProps, IState> {
             <Navigation />
             <SearchBar />
           </TopBar>
-          <FileGrid onAdd={onAdd} onDelete={onDelete} />
+          <FileGrid onMoveTo={onMoveTo} onAdd={onAdd} onDelete={onDelete} />
         </Container>
       </NavContext.Provider>
     );

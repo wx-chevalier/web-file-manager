@@ -12,6 +12,7 @@ import { FileIconList } from './FileIconList';
 interface IProps extends NavContextProps {
   onAdd: (file: FileType) => void;
   onDelete: (id: string, isDir: boolean) => void;
+  onMoveTo?: (ids: string[], targetCategoryId: string) => void;
 }
 
 interface IState {
@@ -69,6 +70,14 @@ class FileGridComp extends Component<IProps, IState> {
       const files: FileType[] = [...this.state.files];
       files.splice(result.source.index, 1);
       this.setState({ files });
+
+      const { onMoveTo } = this.props;
+
+      onMoveTo &&
+        onMoveTo(
+          [_.trimStart(result.draggableId, 'fileIconList-drag-')],
+          _.trimStart(result.combine.draggableId, 'fileIconList-drag-')
+        );
       return;
     }
 
