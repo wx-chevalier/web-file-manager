@@ -10,6 +10,15 @@ export interface NavContextProps {
 
   onUpdateCurrentDir?: (newPath: string) => void;
   onClickPreview?: (file: FileType) => void;
+  onMoveTo?: ({
+    ids,
+    targetCategoryId,
+    showModal
+  }: {
+    ids?: string[];
+    showModal?: boolean;
+    targetCategoryId?: string;
+  }) => void;
 }
 
 export const NavContext: React.Context<NavContextProps> = createContext<NavContextProps>({
@@ -24,6 +33,7 @@ export const withContext = <P extends object>(
       fileMap,
       currentDirId,
       isCombineEnabled,
+      onMoveTo,
       onClickPreview,
       onUpdateCurrentDir,
       renderAddFileElement
@@ -33,6 +43,7 @@ export const withContext = <P extends object>(
         fileMap={fileMap}
         currentDirId={currentDirId}
         isCombineEnabled={isCombineEnabled}
+        onMoveTo={onMoveTo}
         onClickPreview={onClickPreview}
         onUpdateCurrentDir={onUpdateCurrentDir}
         renderAddFileElement={renderAddFileElement}

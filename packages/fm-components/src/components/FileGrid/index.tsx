@@ -12,7 +12,15 @@ import { FileIconList } from './FileIconList';
 interface IProps extends NavContextProps {
   onAdd: (file: FileType) => void;
   onDelete: (id: string, isDir: boolean) => void;
-  onMoveTo?: (ids: string[], targetCategoryId: string) => void;
+  onMoveTo?: ({
+    ids,
+    targetCategoryId,
+    showModal
+  }: {
+    ids?: string[];
+    showModal?: boolean;
+    targetCategoryId?: string;
+  }) => void;
 }
 
 interface IState {
@@ -74,10 +82,10 @@ class FileGridComp extends Component<IProps, IState> {
       const { onMoveTo } = this.props;
 
       onMoveTo &&
-        onMoveTo(
-          [_.trimStart(result.draggableId, 'fileIconList-drag-')],
-          _.trimStart(result.combine.draggableId, 'fileIconList-drag-')
-        );
+        onMoveTo({
+          ids: [_.trimStart(result.draggableId, 'fileIconList-drag-')],
+          targetCategoryId: _.trimStart(result.combine.draggableId, 'fileIconList-drag-')
+        });
       return;
     }
 
@@ -136,7 +144,6 @@ class FileGridComp extends Component<IProps, IState> {
             extraEle={
               <Add
                 onAdd={value => {
-                  console.log(value);
                   this.props.onAdd({
                     ...value,
                     parentId: currentDirId

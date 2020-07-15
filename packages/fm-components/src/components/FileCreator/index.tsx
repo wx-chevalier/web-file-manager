@@ -53,8 +53,6 @@ function FileCreatorComp(_props: IProps) {
               isDir
             });
 
-            console.log(11);
-
             _props.onClose();
           }}
         >

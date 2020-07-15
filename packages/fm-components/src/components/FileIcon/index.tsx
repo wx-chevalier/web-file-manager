@@ -184,13 +184,13 @@ class FileIconComp extends Component<IProps, IState> {
   };
 
   render() {
-    const { entry } = this.props;
+    const { entry, onMoveTo } = this.props;
 
     const ext = getFileExt(entry);
 
     return (
       <Container ref={this.nodeRef}>
-        <Logo onClick={() => this.enterFolder()}>
+        <Logo onClick={this.props.entry.isDir ? this.enterFolder : null}>
           {entry.isDir ? <SvgIcon name="folder" size={50} /> : <SvgIcon name="file" size={50} />}
           {!entry.isDir ? <span>{`.${ext}`}</span> : ''}
         </Logo>
@@ -217,6 +217,10 @@ class FileIconComp extends Component<IProps, IState> {
                   this.setState({
                     showInfo: true
                   })
+              },
+              {
+                info: 'Move To',
+                onClick: () => onMoveTo({ showModal: true, ids: [entry.id] })
               },
               {
                 info: 'Delete',
