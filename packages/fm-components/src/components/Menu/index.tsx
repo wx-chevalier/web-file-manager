@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
@@ -24,7 +25,7 @@ export class Menu extends Component<IProps, IState> {
 
     return (
       <Container className="FileIcon-Menu" style={style}>
-        {content.map(c => (
+        {_.compact(content).map(c => (
           <div className="content" key={c.info} style={c.style} onClick={c.onClick}>
             {c.info}
           </div>

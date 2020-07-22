@@ -8,6 +8,7 @@ export interface NavContextProps {
   isCombineEnabled?: boolean;
   renderAddFileElement?: ({ onClose }: { onClose: Function }) => void;
 
+  onToggleSwitch?: (checked: boolean) => void;
   onUpdateCurrentDir?: (newPath: string) => void;
   onClickPreview?: (file: FileType) => void;
   onMoveTo?: ({
@@ -15,9 +16,9 @@ export interface NavContextProps {
     targetCategoryId,
     showModal
   }: {
-    ids?: string[];
     showModal?: boolean;
     targetCategoryId?: string;
+    ids?: { entryId: string; isDir: boolean }[];
   }) => void;
 }
 
@@ -35,6 +36,7 @@ export const withContext = <P extends object>(
       isCombineEnabled,
       onMoveTo,
       onClickPreview,
+      onToggleSwitch,
       onUpdateCurrentDir,
       renderAddFileElement
     }) => (
@@ -45,6 +47,7 @@ export const withContext = <P extends object>(
         isCombineEnabled={isCombineEnabled}
         onMoveTo={onMoveTo}
         onClickPreview={onClickPreview}
+        onToggleSwitch={onToggleSwitch}
         onUpdateCurrentDir={onUpdateCurrentDir}
         renderAddFileElement={renderAddFileElement}
       />

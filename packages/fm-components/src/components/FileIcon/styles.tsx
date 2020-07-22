@@ -10,9 +10,9 @@ export const Container = styled.div`
   font-family: Lato, sans-serif;
   font-weight: lighter;
   color: #535b62;
-  margin-bottom: 22px;
-  padding: 8px 7px 10px 10px;
+  padding: 8px 0 10px 0;
   border-radius: 8px;
+  margin: 0 10px 22px 7px;
   transition: background 230ms ease-in;
   &:hover {
     background: #e6f5ff;

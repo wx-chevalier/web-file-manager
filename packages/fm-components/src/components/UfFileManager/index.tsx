@@ -8,6 +8,7 @@ import { FileGrid } from '../FileGrid';
 import { Navigation } from '../Navigation';
 import { SearchBar } from '../SearchBar';
 import { SEO } from '../SEO';
+import { ToggleSwitch } from '../ToggleSwitch';
 
 interface IProps {
   fileMap: Record<string, FileType>;
@@ -15,6 +16,7 @@ interface IProps {
   withSEO?: boolean;
   isCombineEnabled?: boolean;
 
+  onToggleSwitch?: (checked: boolean) => void;
   renderAddFileElement?: ({ onClose }: { onClose: Function }) => JSX.Element;
   onOpenMenu?: (id: string) => void;
   onAdd?: (file: FileType) => void;
@@ -27,13 +29,14 @@ interface IProps {
     targetCategoryId,
     showModal
   }: {
-    ids?: string[];
     showModal?: boolean;
     targetCategoryId?: string;
+    ids?: { entryId: string; isDir: boolean }[];
   }) => void;
 }
 
 interface IState {
+  isMultiple: boolean;
   currentDirId: string;
 }
 
@@ -42,7 +45,7 @@ export class UfFileManager extends Component<IProps, IState> {
     withSEO: false
   };
 
-  state = { currentDirId: this.props.currentDirId };
+  state = { currentDirId: this.props.currentDirId, isMultiple: false };
 
   componentWillReceiveProps(nextProps: IProps) {
     // 当外部传入的 Path 发生变化时候
@@ -68,9 +71,10 @@ export class UfFileManager extends Component<IProps, IState> {
       onAdd,
       onDelete,
       onMoveTo,
-      onClickPreview
+      onClickPreview,
+      onToggleSwitch
     } = this.props;
-    const { currentDirId } = this.state;
+    const { isMultiple, currentDirId } = this.state;
 
     return (
       <NavContext.Provider
@@ -78,8 +82,9 @@ export class UfFileManager extends Component<IProps, IState> {
           fileMap,
           currentDirId,
           isCombineEnabled,
-          onClickPreview,
           onMoveTo,
+          onClickPreview,
+          onToggleSwitch,
           renderAddFileElement,
           onUpdateCurrentDir: this.onUpdateCurrentDir
         }}
@@ -96,8 +101,18 @@ export class UfFileManager extends Component<IProps, IState> {
           <TopBar>
             <Navigation />
             <SearchBar />
+            <ToggleSwitch
+              checkedChildren={'多选'}
+              unCheckedChildren={'单选'}
+              checkedValue={isMultiple}
+              style={{ marginLeft: 12 }}
+              onChange={isMultiple => {
+                this.setState({ isMultiple });
+                onToggleSwitch(isMultiple);
+              }}
+            />
           </TopBar>
-          <FileGrid onAdd={onAdd} onDelete={onDelete} />
+          <FileGrid isMultiple={isMultiple} onAdd={onAdd} onDelete={onDelete} />
         </Container>
       </NavContext.Provider>
     );
@@ -115,6 +130,7 @@ const Container = styled.div`
 
 const TopBar = styled.div`
   display: flex;
+  align-items: center;
   @media screen and (max-width: 768px) {
     display: block;
   }

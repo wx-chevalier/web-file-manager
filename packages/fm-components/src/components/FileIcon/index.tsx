@@ -13,31 +13,40 @@ interface IProps extends NavContextProps {
   index: number | string;
   entry: FileType;
 
+  isMultiple?: boolean;
   provided?: DraggableProvided;
   snapshot?: DraggableStateSnapshot;
+  multipledEntryIds?: { entryId: string; isDir: boolean }[];
 
   onDelete: Function;
+
+  onMultipleSelect?: (entryId: string, isDir: boolean, isChecked: boolean) => void;
 }
 
 interface IState {
   visible: boolean;
   showInfo: boolean;
   style: StyleObject;
+  isChecked?: boolean;
   prevStyle?: StyleObject;
 }
 
 class FileIconComp extends Component<IProps, IState> {
   nodeRef = createRef<HTMLDivElement>();
 
-  state = {
-    visible: false,
-    showInfo: false,
-    style: {
-      right: 0,
-      left: 0
-    },
-    prevStyle: {}
-  };
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      visible: false,
+      showInfo: false,
+      style: {
+        right: 0,
+        left: 0
+      },
+      prevStyle: {},
+      isChecked: false
+    };
+  }
 
   componentDidMount() {
     document.addEventListener('contextmenu', this._handleContextMenu);
@@ -49,6 +58,14 @@ class FileIconComp extends Component<IProps, IState> {
     document.removeEventListener('click', this._handleMouseLeave);
   }
 
+  componentDidUpdate(prevProps: IProps) {
+    const { isMultiple } = this.props;
+    // 从多选模式切回单选时取消 文件或文件夹的选中状态
+    if (prevProps.isMultiple !== isMultiple && !isMultiple) {
+      this.setState({ isChecked: false });
+    }
+  }
+
   _handleContextMenu = (event: any) => {
     event.preventDefault();
 
@@ -56,7 +73,7 @@ class FileIconComp extends Component<IProps, IState> {
 
     const wasOutside = !path.includes(this.nodeRef.current) || false;
 
-    if (wasOutside) {
+    if (wasOutside && !this.props.isMultiple) {
       this.setState({
         visible: false,
         style: {
@@ -111,8 +128,8 @@ class FileIconComp extends Component<IProps, IState> {
 
     this.setState({
       style,
-      visible: true,
-      prevStyle
+      prevStyle,
+      visible: true
     });
   };
 
@@ -184,13 +201,29 @@ class FileIconComp extends Component<IProps, IState> {
   };
 
   render() {
-    const { entry, onMoveTo } = this.props;
+    const { isChecked } = this.state;
+    const { isMultiple, multipledEntryIds, entry, onMoveTo, onMultipleSelect } = this.props;
 
     const ext = getFileExt(entry);
 
     return (
-      <Container ref={this.nodeRef}>
-        <Logo onClick={this.props.entry.isDir ? this.enterFolder : null}>
+      <Container
+        ref={this.nodeRef}
+        style={{ background: isChecked && isMultiple ? '#e6f5ff' : 'unset' }}
+      >
+        <Logo
+          onClick={
+            this.props.entry.isDir && !isMultiple
+              ? this.enterFolder
+              : isMultiple
+              ? () => {
+                  this.setState({ isChecked: !isChecked }, () => {
+                    onMultipleSelect(entry.id, entry.isDir, this.state.isChecked);
+                  });
+                }
+              : null
+          }
+        >
           {entry.isDir ? <SvgIcon name="folder" size={50} /> : <SvgIcon name="file" size={50} />}
           {!entry.isDir ? <span>{`.${ext}`}</span> : ''}
         </Logo>
@@ -199,8 +232,8 @@ class FileIconComp extends Component<IProps, IState> {
           <Menu
             style={this.state.style}
             content={[
-              {
-                info: 'Open',
+              !isMultiple && {
+                info: '打开',
                 onClick: () => {
                   entry.isDir
                     ? this.props.onUpdateCurrentDir(this.props.entry.id)
@@ -211,19 +244,25 @@ class FileIconComp extends Component<IProps, IState> {
                       });
                 }
               },
-              {
-                info: 'Get Info',
+              !isMultiple && {
+                info: '详情',
                 onClick: () =>
                   this.setState({
                     showInfo: true
                   })
               },
               {
-                info: 'Move To',
-                onClick: () => onMoveTo({ showModal: true, ids: [entry.id] })
+                info: '移动/复制',
+                onClick: () =>
+                  onMoveTo({
+                    showModal: true,
+                    ids: isMultiple
+                      ? multipledEntryIds
+                      : [{ entryId: entry.id, isDir: entry.isDir }]
+                  })
               },
               {
-                info: 'Delete',
+                info: '删除',
                 style: { color: 'red' },
                 onClick: () => {
                   this.handleDelete();

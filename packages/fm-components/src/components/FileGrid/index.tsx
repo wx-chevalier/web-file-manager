@@ -10,6 +10,8 @@ import { Add } from '../Add';
 import { FileIconList } from './FileIconList';
 
 interface IProps extends NavContextProps {
+  isMultiple?: boolean;
+
   onAdd: (file: FileType) => void;
   onDelete: (id: string, isDir: boolean) => void;
   onMoveTo?: ({
@@ -17,15 +19,17 @@ interface IProps extends NavContextProps {
     targetCategoryId,
     showModal
   }: {
-    ids?: string[];
     showModal?: boolean;
     targetCategoryId?: string;
+    ids?: { entryId: string; isDir: boolean }[];
   }) => void;
 }
 
 interface IState {
   files: FileType[];
   isDisableCombine: boolean;
+
+  isDir?: boolean;
 }
 
 class FileGridComp extends Component<IProps, IState> {
@@ -83,7 +87,12 @@ class FileGridComp extends Component<IProps, IState> {
 
       onMoveTo &&
         onMoveTo({
-          ids: [_.trimStart(result.draggableId, 'fileIconList-drag-')],
+          ids: [
+            {
+              isDir: this.state.isDir,
+              entryId: _.trimStart(result.draggableId, 'fileIconList-drag-')
+            }
+          ],
           targetCategoryId: _.trimStart(result.combine.draggableId, 'fileIconList-drag-')
         });
       return;
@@ -113,10 +122,16 @@ class FileGridComp extends Component<IProps, IState> {
 
   onDragUpdate = (result: DragUpdate) => {
     const { files } = this.state;
+    const { isMultiple } = this.props;
     const { combine } = result;
 
     // 要移动的目标文件或目录
     const resp = (files || []).find(f => _.endsWith(result.draggableId, f.id));
+
+    if (!isMultiple) {
+      // 单选模式时获取需要移动目标的 isDir
+      this.setState({ isDir: resp.isDir });
+    }
 
     if (combine) {
       // 要移入的目标文件或目录
@@ -132,13 +147,14 @@ class FileGridComp extends Component<IProps, IState> {
 
   render() {
     const { isDisableCombine, files } = this.state;
-    const { currentDirId, isCombineEnabled, onDelete } = this.props;
+    const { isMultiple, currentDirId, isCombineEnabled, onDelete } = this.props;
 
     return (
       <Container>
         <DragDropContext onDragEnd={this.onDragEnd} onDragUpdate={this.onDragUpdate}>
           <FileIconList
             files={files}
+            isMultiple={isMultiple}
             listType="FileIconList"
             isCombineEnabled={isCombineEnabled && !isDisableCombine}
             extraEle={
