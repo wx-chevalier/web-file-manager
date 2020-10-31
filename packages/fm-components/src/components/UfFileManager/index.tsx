@@ -8,23 +8,35 @@ import { FileGrid } from '../FileGrid';
 import { Navigation } from '../Navigation';
 import { SearchBar } from '../SearchBar';
 import { SEO } from '../SEO';
+import { ToggleSwitch } from '../ToggleSwitch';
 
 interface IProps {
   fileMap: Record<string, FileType>;
   currentDirId?: string;
   withSEO?: boolean;
+  isCombineEnabled?: boolean;
 
+  onToggleSwitch?: (checked: boolean) => void;
   renderAddFileElement?: ({ onClose }: { onClose: Function }) => JSX.Element;
-
+  onOpenMenu?: (id: string) => void;
   onAdd?: (file: FileType) => void;
-  onDelete?: (id: string) => void;
+  onDelete?: (id: string, isDir: boolean) => void;
   onEnter?: (id: string) => void;
-  onMoveTo?: (file: FileType) => void;
   onCopyTo?: (file: FileType) => void;
   onClickPreview?: (file: FileType) => void;
+  onMoveTo?: ({
+    ids,
+    targetCategoryId,
+    showModal
+  }: {
+    showModal?: boolean;
+    targetCategoryId?: string;
+    ids?: { entryId: string; isDir: boolean }[];
+  }) => void;
 }
 
 interface IState {
+  isMultiple: boolean;
   currentDirId: string;
 }
 
@@ -33,7 +45,7 @@ export class UfFileManager extends Component<IProps, IState> {
     withSEO: false
   };
 
-  state = { currentDirId: this.props.currentDirId };
+  state = { currentDirId: this.props.currentDirId, isMultiple: false };
 
   componentWillReceiveProps(nextProps: IProps) {
     // 当外部传入的 Path 发生变化时候
@@ -51,17 +63,30 @@ export class UfFileManager extends Component<IProps, IState> {
   };
 
   render() {
-    const { fileMap, withSEO, renderAddFileElement, onAdd, onDelete, onClickPreview } = this.props;
-    const { currentDirId } = this.state;
+    const {
+      fileMap,
+      withSEO,
+      isCombineEnabled,
+      renderAddFileElement,
+      onAdd,
+      onDelete,
+      onMoveTo,
+      onClickPreview,
+      onToggleSwitch
+    } = this.props;
+    const { isMultiple, currentDirId } = this.state;
 
     return (
       <NavContext.Provider
         value={{
           fileMap,
           currentDirId,
+          isCombineEnabled,
+          onMoveTo,
+          onClickPreview,
+          onToggleSwitch,
           renderAddFileElement,
-          onUpdateCurrentDir: this.onUpdateCurrentDir,
-          onClickPreview
+          onUpdateCurrentDir: this.onUpdateCurrentDir
         }}
       >
         {withSEO && (
@@ -76,8 +101,18 @@ export class UfFileManager extends Component<IProps, IState> {
           <TopBar>
             <Navigation />
             <SearchBar />
+            <ToggleSwitch
+              checkedChildren={'多选'}
+              unCheckedChildren={'单选'}
+              checkedValue={isMultiple}
+              style={{ marginLeft: 12 }}
+              onChange={isMultiple => {
+                this.setState({ isMultiple });
+                onToggleSwitch(isMultiple);
+              }}
+            />
           </TopBar>
-          <FileGrid onAdd={onAdd} onDelete={onDelete} />
+          <FileGrid isMultiple={isMultiple} onAdd={onAdd} onDelete={onDelete} />
         </Container>
       </NavContext.Provider>
     );
@@ -95,6 +130,7 @@ const Container = styled.div`
 
 const TopBar = styled.div`
   display: flex;
+  align-items: center;
   @media screen and (max-width: 768px) {
     display: block;
   }

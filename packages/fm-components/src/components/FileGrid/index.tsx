@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DragUpdate, DropResult } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 import { NavContextProps, withContext } from '../../context/NavContext';
@@ -9,12 +10,26 @@ import { Add } from '../Add';
 import { FileIconList } from './FileIconList';
 
 interface IProps extends NavContextProps {
+  isMultiple?: boolean;
+
   onAdd: (file: FileType) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string, isDir: boolean) => void;
+  onMoveTo?: ({
+    ids,
+    targetCategoryId,
+    showModal
+  }: {
+    showModal?: boolean;
+    targetCategoryId?: string;
+    ids?: { entryId: string; isDir: boolean }[];
+  }) => void;
 }
 
 interface IState {
   files: FileType[];
+  isDisableCombine: boolean;
+
+  isDir?: boolean;
 }
 
 class FileGridComp extends Component<IProps, IState> {
@@ -22,7 +37,8 @@ class FileGridComp extends Component<IProps, IState> {
     super(props);
 
     this.state = {
-      files: []
+      files: [],
+      isDisableCombine: false
     };
   }
   // 判断路径是否准确，不准确则跳转到根路径
@@ -60,11 +76,25 @@ class FileGridComp extends Component<IProps, IState> {
   // }
 
   onDragEnd = (result: DropResult) => {
+    this.setState({ isDisableCombine: false });
     // super simple, just removing the dragging item
     if (result.combine) {
       const files: FileType[] = [...this.state.files];
       files.splice(result.source.index, 1);
       this.setState({ files });
+
+      const { onMoveTo } = this.props;
+
+      onMoveTo &&
+        onMoveTo({
+          ids: [
+            {
+              isDir: this.state.isDir,
+              entryId: _.trimStart(result.draggableId, 'fileIconList-drag-')
+            }
+          ],
+          targetCategoryId: _.trimStart(result.combine.draggableId, 'fileIconList-drag-')
+        });
       return;
     }
 
@@ -90,19 +120,46 @@ class FileGridComp extends Component<IProps, IState> {
     }
   };
 
+  onDragUpdate = (result: DragUpdate) => {
+    const { files } = this.state;
+    const { isMultiple } = this.props;
+    const { combine } = result;
+
+    // 要移动的目标文件或目录
+    const resp = (files || []).find(f => _.endsWith(result.draggableId, f.id));
+
+    if (!isMultiple) {
+      // 单选模式时获取需要移动目标的 isDir
+      this.setState({ isDir: resp.isDir });
+    }
+
+    if (combine) {
+      // 要移入的目标文件或目录
+      const target = (files || []).find(f => _.endsWith(combine.draggableId, f.id));
+
+      if ((target.isDir && !resp.isDir) || (target.isDir && resp.isDir)) {
+        this.setState({ isDisableCombine: false });
+      } else {
+        this.setState({ isDisableCombine: true });
+      }
+    }
+  };
+
   render() {
-    const { currentDirId, onDelete } = this.props;
+    const { isDisableCombine, files } = this.state;
+    const { isMultiple, currentDirId, isCombineEnabled, onDelete } = this.props;
 
     return (
       <Container>
-        <DragDropContext onDragEnd={this.onDragEnd}>
+        <DragDropContext onDragEnd={this.onDragEnd} onDragUpdate={this.onDragUpdate}>
           <FileIconList
-            files={this.state.files}
+            files={files}
+            isMultiple={isMultiple}
             listType="FileIconList"
+            isCombineEnabled={isCombineEnabled && !isDisableCombine}
             extraEle={
               <Add
                 onAdd={value => {
-                  console.log(value);
                   this.props.onAdd({
                     ...value,
                     parentId: currentDirId

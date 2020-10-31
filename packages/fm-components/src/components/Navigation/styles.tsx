@@ -18,7 +18,6 @@ export const Path = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  direction: rtl;
 
   & .currentDirId {
     color: #001800;

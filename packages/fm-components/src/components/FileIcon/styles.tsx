@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  height: 80px;
-  width: 96px;
+  width: 100px;
   display: flex;
   cursor: pointer;
   flex-direction: column;
@@ -11,9 +10,9 @@ export const Container = styled.div`
   font-family: Lato, sans-serif;
   font-weight: lighter;
   color: #535b62;
-  margin-bottom: 22px;
-  padding: 8px 7px 10px 10px;
+  padding: 8px 0 10px 0;
   border-radius: 8px;
+  margin: 0 10px 22px 7px;
   transition: background 230ms ease-in;
   &:hover {
     background: #e6f5ff;
@@ -41,5 +40,8 @@ export const Img = styled.img`
 `;
 
 export const Name = styled.div`
+  width: 100%;
+  text-align: center;
+  word-break: break-all;
   position: relative;
 `;
